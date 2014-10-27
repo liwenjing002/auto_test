@@ -1,0 +1,45 @@
+<h1>Listing test_case_flows</h1>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @test_case.title %>
+</p>
+
+<p>
+  <b>Desc:</b>
+  <%= @test_case.desc %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @test_case.user_id %>
+</p>
+
+
+
+<table>
+  <tr>
+    <th>步骤</th>
+    <th>动作类型</th>
+    <th>元素定位</th>
+    <th>数据类型</th>
+    <th>数据</th>
+    <th>添加</th>
+  </tr>
+
+<%= form_for(@test_case_flow) do |f| %>
+<%= f.text_field :test_case_id,:type=>'hidden' %>
+  <tr>
+    <td><%= f.number_field :flow_seq,:readonly=>'readonly' %></td>
+    <td><%= f.select :flow_type_id, FlowType.find(:all).collect {|p| [ p.name, p.code ] } %></td>
+    <td><%= f.text_field :flow_location %></td>
+    <td><%= f.select :flow_date_type_id, FlowDateType.find(:all).collect {|p| [ p.name, p.code ] } %></td>
+    <td><%= f.text_area :flow_date,:rows=>1 %></td>
+    <td><%= f.submit :保存 %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

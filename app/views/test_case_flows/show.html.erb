@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Test case:</b>
+  <%= @test_case_flow.test_case_id %>
+</p>
+
+<p>
+  <b>Flow type:</b>
+  <%= @test_case_flow.flow_type_id %>
+</p>
+
+<p>
+  <b>Flow seq:</b>
+  <%= @test_case_flow.flow_seq %>
+</p>
+
+<p>
+  <b>Flow location:</b>
+  <%= @test_case_flow.flow_location %>
+</p>
+
+<p>
+  <b>Flow date type:</b>
+  <%= @test_case_flow.flow_date_type_id %>
+</p>
+
+<p>
+  <b>Flow date:</b>
+  <%= @test_case_flow.flow_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_test_case_flow_path(@test_case_flow) %> |
+<%= link_to 'Back', test_case_flows_path %>

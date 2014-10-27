@@ -1,0 +1,33 @@
+<h1>Listing test_case_flows</h1>
+
+<table>
+  <tr>
+    <th>Test case</th>
+    <th>Flow type</th>
+    <th>Flow seq</th>
+    <th>Flow location</th>
+    <th>Flow date type</th>
+    <th>Flow date</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @test_case_flows.each do |test_case_flow| %>
+  <tr>
+    <td><%= test_case_flow.test_case_id %></td>
+    <td><%= test_case_flow.flow_type_id %></td>
+    <td><%= test_case_flow.flow_seq %></td>
+    <td><%= test_case_flow.flow_location %></td>
+    <td><%= test_case_flow.flow_date_type_id %></td>
+    <td><%= test_case_flow.flow_date %></td>
+    <td><%= link_to 'Show', test_case_flow %></td>
+    <td><%= link_to 'Edit', edit_test_case_flow_path(test_case_flow) %></td>
+    <td><%= link_to 'Destroy', test_case_flow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Test case flow', new_test_case_flow_path %>

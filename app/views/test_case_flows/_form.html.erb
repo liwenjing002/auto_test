@@ -1,0 +1,42 @@
+<%= form_for(@test_case_flow) do |f| %>
+  <% if @test_case_flow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@test_case_flow.errors.count, "error") %> prohibited this test_case_flow from being saved:</h2>
+
+      <ul>
+      <% @test_case_flow.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.text_field :test_case_id,:type=>'hidden' %>
+  </div>
+  <div class="field">
+    <%= f.label :步骤 %><br />
+   <%= f.number_field :flow_seq,:readonly=>'readonly' %>
+  </div>
+
+  <div class="field">
+    <%= f.label :动作 %><br />
+    <%= f.select :flow_type_id, FlowType.find(:all).collect {|p| [ p.name, p.code ] } %>
+  </div>
+
+  <div class="field">
+    <%= f.label :页面元素定位 %><br />
+    <%= f.text_field :flow_location %>
+  </div>
+  <div class="field">
+    <%= f.label :数据类型 %><br />
+    <%= f.select :flow_date_type_id, FlowDateType.find(:all).collect {|p| [ p.name, p.code ] } %>
+  </div>
+  <div class="field">
+    <%= f.label :数据 %><br />
+    <%= f.text_area :flow_date %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

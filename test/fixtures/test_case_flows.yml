@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  test_case_id: MyString
+  flow_type_id: MyString
+  flow_seq: 1
+  flow_location: MyString
+  flow_date_type_id: MyString
+  flow_date: MyText
+
+two:
+  test_case_id: MyString
+  flow_type_id: MyString
+  flow_seq: 1
+  flow_location: MyString
+  flow_date_type_id: MyString
+  flow_date: MyText
