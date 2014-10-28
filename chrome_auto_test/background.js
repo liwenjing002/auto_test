@@ -56,6 +56,30 @@ chrome.extension.onRequest.addListener(
        sendResponse(msg);
    }
  
+  }else{
+
+ if(elm_date=='')   {
+      
+      if(request.textContent!=null && request.textContent!=''){
+        elm_date = elm_date + "textContent:" + request.textContent + '|'
+      }
+      if(request.value!=null && request.value!=''){
+        elm_date = elm_date + "value:" + request.value + '|'
+      }
+
+
+   }else{
+
+    var msg = {
+        id: request.id,
+        date:elm_date,
+       msg_type:'set_date'
+      };
+      elm_date = '';
+       sendResponse(msg);
+   }
+
+
   }
 
 

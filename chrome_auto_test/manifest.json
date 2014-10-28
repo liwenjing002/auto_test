@@ -9,8 +9,13 @@
   "content_scripts": [
     {
       "matches": ["http://*/*","https://*/*"],
-      "js": ["jquery.js", "myscript.js"]
+      "js": ["jquery.js", "jquery.confirm.js","myscript.js"],
+      "css":["jquery.confirm.css"]
     }
   ],
+
+    "web_accessible_resources": [
+      "body_bg.jpg","buttons.png","header_bg.jpg"
+    ],
   "manifest_version": 2
 }
