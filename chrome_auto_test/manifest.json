@@ -1,0 +1,16 @@
+{
+  "name": "Context Menus Sample",
+  "description": "Shows some of the features of the Context Menus API",
+  "version": "0.6",
+  "permissions": ["contextMenus"],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*","https://*/*"],
+      "js": ["jquery.js", "myscript.js"]
+    }
+  ],
+  "manifest_version": 2
+}
