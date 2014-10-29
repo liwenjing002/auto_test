@@ -80,4 +80,44 @@ class TestCasesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+
+  #生成脚本
+  def pro
+    @test_case = TestCase.find(params[:id])
+    @test_script = TestScript.new
+    @test_script.test_case_id = @test_case.id
+    @test_script.db_script @test_case
+
+    @test_case = TestCase.find(params[:id])
+    @test_script.file_script @test_case
+
+      respond_to do |format|
+      format.html { redirect_to test_cases_url }
+      format.json { head :no_content }
+    end
+
+  end
+
+  def excuse
+    @test_case = TestCase.find(params[:id])
+    
+    @test_case.test_scripts.each do |test_script|
+     
+       Thread.new  do  
+           test_script.excuse
+       end  
+
+    end
+
+      respond_to do |format|
+      format.html { redirect_to test_cases_url }
+      format.json { head :no_content }
+      format.js { render :layout => false }
+    end
+
+  end
+
+
 end

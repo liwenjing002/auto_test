@@ -8,13 +8,15 @@ AutoTest::Application.routes.draw do
   resources :test_case_flows
 
 
-  resources :test_cases
-
+  resources :test_cases 
 
   match 'home/index' => 'home#index'
+  
+  get '/test_cases/:id/pro' => "test_cases#pro", :as => "pro_test_cases"
 
+  get '/test_cases/:id/excuse' => "test_cases#excuse", :as => "excuse_test_cases"
 
-
+  root :to => 'home#index'
 
   
   # The priority is based upon order of creation:
@@ -66,7 +68,7 @@ AutoTest::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  # 
 
   # See how all your routes lay out with "rake routes"
 

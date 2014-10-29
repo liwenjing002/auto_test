@@ -21,7 +21,7 @@
 
   <div class="field">
     <%= f.label :动作 %><br />
-    <%= f.select :flow_type_id, FlowType.find(:all).collect {|p| [ p.name, p.code ] } %>
+    <%= f.select :flow_type_id, FlowType.find(:all).collect {|p| [ p.name, p.id ] } %>
   </div>
 
   <div class="field">
@@ -30,7 +30,7 @@
   </div>
   <div class="field">
     <%= f.label :数据类型 %><br />
-    <%= f.select :flow_date_type_id, FlowDateType.find(:all).collect {|p| [ p.name, p.code ] } %>
+    <%= f.select :flow_date_type_id, FlowDateType.find(:all).collect {|p| [ p.name, p.id ] } %>
   </div>
   <div class="field">
     <%= f.label :数据 %><br />

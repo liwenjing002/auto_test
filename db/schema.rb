@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141027142400) do
+ActiveRecord::Schema.define(:version => 20141029052112) do
 
   create_table "flow_date_types", :force => true do |t|
     t.string   "code"
@@ -47,6 +47,14 @@ ActiveRecord::Schema.define(:version => 20141027142400) do
     t.string   "host"
     t.string   "user_name"
     t.string   "pd"
+  end
+
+  create_table "test_scripts", :force => true do |t|
+    t.string   "test_case_id"
+    t.string   "test_plan_id"
+    t.text     "script_content"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
 end

@@ -16,5 +16,30 @@
 </p>
 
 
+
+<table border="1">
+  <tr>
+    <th>步骤</th>
+    <th>动作类型</th>
+    <th>元素定位</th>
+    <th>数据类型</th>
+    <th>数据</th>
+  </tr>
+
+  
+    <% @test_case.test_case_flows.each do |test_case_flow| %>
+    <tr>
+    <td><%= test_case_flow.flow_seq %></td>
+    <td><%= test_case_flow.flow_type.name %></td>
+    <td><%= test_case_flow.flow_location %></td>
+    <td><%= test_case_flow.flow_date_type.name %></td>
+    <td><%= test_case_flow.flow_date %></td>
+     </tr>
+    <% end %>
+ 
+
+</table>
+
+
 <%= link_to 'Edit', edit_test_case_path(@test_case) %> |
 <%= link_to 'Back', test_cases_path %>

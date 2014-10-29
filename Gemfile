@@ -1,5 +1,5 @@
 source 'https://ruby.taobao.org'
-
+gem 'watir-webdriver' 
 gem 'rails', '3.2.18'
 
 # Bundle edge Rails instead:
