@@ -101,8 +101,8 @@ class TestCasesController < ApplicationController
   end
 
   def excuse
-    @test_case = TestCase.find(params[:id])
     
+    @test_case = TestCase.find(params[:id])
     @test_case.test_scripts.each do |test_script|
      
        Thread.new  do  

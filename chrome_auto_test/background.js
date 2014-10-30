@@ -28,21 +28,23 @@ chrome.extension.onRequest.addListener(
     if(request.msg_type=="get_elm"){
    //放数据
    if(elm=='')   {
+      elm = "{"
       if(request.id!=null && request.id!=''){
-        elm = elm + "id:" + request.id + '|'
+        elm = elm + ":id=>\"" + request.id + '\",'
       }
       if(request.type!=null && request.type!=''){
-        elm = elm + "type:" + request.type + '|'
+        elm = elm + ":type=>\"" + request.type + '\",'
       }
       if(request.class!=null && request.class!=''){
-        elm = elm + "class:" + request.class + '|'
+        elm = elm + ":class=>\"" + request.class + '\",'
       }
       if(request.name!=null && request.name!=''){
-        elm = elm + "name:" + request.name + '|'
+        elm = elm + ":name=>\"" + request.name + '\",'
       }
       if(request.textContent!=null && request.textContent!=''){
-        elm = elm + "textContent:" + request.textContent + '|'
+        elm = elm + ":text=>\"" + request.textContent + '\",'
       }
+      elm = elm + "}"
 
 
    }else{
