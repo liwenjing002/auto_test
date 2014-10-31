@@ -50,7 +50,7 @@ class TestScript < ActiveRecord::Base
 
   def excuse
 
-  	require "./test_script/" + self.test_case_id.to_s + "_" + self.id.to_s + ".rb"
+  	load "./test_script/" + self.test_case_id.to_s + "_" + self.id.to_s + ".rb"
   end
 
 end

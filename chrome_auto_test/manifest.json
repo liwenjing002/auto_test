@@ -4,7 +4,7 @@
   "version": "0.6",
   "permissions": ["contextMenus"],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["jquery.js","background.js"]
   },
   "content_scripts": [
     {

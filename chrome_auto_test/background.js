@@ -42,7 +42,7 @@ chrome.extension.onRequest.addListener(
         elm = elm + ":name=>\"" + request.name + '\",'
       }
       if(request.textContent!=null && request.textContent!=''){
-        elm = elm + ":text=>\"" + request.textContent + '\",'
+        elm = elm + ":text=>\"" + $.trim(request.textContent) + '\",'
       }
       elm = elm + "}"
 
