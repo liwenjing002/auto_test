@@ -1,0 +1,37 @@
+<%= form_for(@test_plan) do |f| %>
+  <% if @test_plan.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@test_plan.errors.count, "error") %> prohibited this test_plan from being saved:</h2>
+
+      <ul>
+      <% @test_plan.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :名称 %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :服务器ip（用于获取短信和密码，可不填） %><br />
+    <%= f.text_field :host %>
+  </div>
+  <div class="field">
+    <%= f.label :用户名 %><br />
+    <%= f.text_field :user_name %>
+  </div>
+  <div class="field">
+    <%= f.label :密码 %><br />
+    <%= f.text_field :pd %>
+  </div>
+  <div class="field">
+    <%= f.label :log日志路径 %><br />
+    <%= f.text_field :log_path %>
+  </div>
+  <div class="actions">
+    <%= f.submit :value=>"下一步，选择测试用例"%>
+  </div>
+<% end %>

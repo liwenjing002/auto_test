@@ -1,4 +1,10 @@
 AutoTest::Application.routes.draw do
+  resources :test_plan_cases
+
+
+  resources :test_plans
+
+
   resources :flow_date_types
 
 

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @test_plan.name %>
+</p>
+
+<p>
+  <b>Host:</b>
+  <%= @test_plan.host %>
+</p>
+
+<p>
+  <b>Pd:</b>
+  <%= @test_plan.pd %>
+</p>
+
+<p>
+  <b>Log path:</b>
+  <%= @test_plan.log_path %>
+</p>
+
+
+<%= link_to 'Edit', edit_test_plan_path(@test_plan) %> |
+<%= link_to 'Back', test_plans_path %>
