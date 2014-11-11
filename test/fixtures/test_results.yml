@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  test_plan_id: MyString
+  test_case_id: MyString
+  test_script_id: MyString
+  test_result_content: MyText
+
+two:
+  test_plan_id: MyString
+  test_case_id: MyString
+  test_script_id: MyString
+  test_result_content: MyText

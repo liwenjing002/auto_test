@@ -1,0 +1,23 @@
+<h1>测试结果</h1>
+
+<table border="1">
+  <tr>
+    <th>测试计划</th>
+    <th>测试用例</th>
+    <th>错误描述</th>
+    <th>查看脚本</th>
+  </tr>
+
+<% @test_results.each do |test_result| %>
+  <tr>
+    <td><%= test_result.test_plan.name %></td>
+    <td><%= test_result.test_case.title %></td>
+    <td><%= test_result.test_result_content.html_safe %></td>
+    <td><%= link_to '查看脚本', test_result.test_case ,:target=>"_blank" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to '新建测试计划', new_test_plan_path %>

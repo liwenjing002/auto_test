@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141031094432) do
+ActiveRecord::Schema.define(:version => 20141111080314) do
 
   create_table "flow_date_types", :force => true do |t|
     t.string   "code"
@@ -46,6 +46,21 @@ ActiveRecord::Schema.define(:version => 20141031094432) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "test_plan_cases", :force => true do |t|
+    t.string   "test_case_id"
+    t.string   "test_plan_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "test_plan_data", :force => true do |t|
+    t.string   "test_plan_id"
+    t.string   "test_case_flow_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.text     "test_data"
+  end
+
   create_table "test_plans", :force => true do |t|
     t.string   "name"
     t.string   "host"
@@ -54,6 +69,17 @@ ActiveRecord::Schema.define(:version => 20141031094432) do
     t.string   "log_path"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "test_num"
+  end
+
+  create_table "test_results", :force => true do |t|
+    t.string   "test_plan_id"
+    t.string   "test_case_id"
+    t.string   "test_script_id"
+    t.text     "test_result_content"
+    t.boolean  "test_result_flag"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   create_table "test_scripts", :force => true do |t|

@@ -1,5 +1,110 @@
-<h1>New test_plan_case</h1>
+<h1>新增测试计划-勾选测试用例</h1>
 
-<%= render 'form' %>
+<p id="notice"><%= notice %></p>
 
-<%= link_to 'Back', test_plan_cases_path %>
+<div>
+<p>
+  <b>测试计划:</b>
+  <%= @test_plan.name %>
+</p>
+<p>
+  <b>服务器:</b>
+  <%= @test_plan.host %>
+</p>
+
+<p>
+  <b>服务器用户名:</b>
+  <%= @test_plan.user_name %>
+</p>
+<p>
+  <b>日志路径:</b>
+  <%= @test_plan.log_path %>
+</p>
+<p>--------------------------------------------------华丽的风格线----------------------------------------------------------</p>
+</div>
+
+<div id="center" style="">
+<div style="float:left">
+<table>
+ <tr>
+    <th>选择用例</th>
+    <th>用例名称</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+<% @test_cases.each do |test_case| %>
+  <tr>
+  	<td><input type="checkbox" class="checkbox_test_case" id="<%=test_case.id%>"  <%if test_case.selected %>checked=checked<%end%>> </td>
+    <td><%= test_case.title %>
+    <td><%= link_to '查看用例', test_case,:target=>"_blank" %></td>
+    <td><%= link_to '执行脚本', excuse_test_cases_path(test_case) %></td>
+     <td><%= link_to '添加脚本数据', "/test_plan_case/get_data?test_case_id=#{test_case.id}&test_plan_id=#{@test_plan.id}",:class=>"add_data",:remote => true%></td>
+  </tr>
+<% end %>
+</table>
+</div>
+<div style="float:left;margin-left:50px;height:<%= @test_cases.length*25%>px; width:1px; border-left:2px #000 solid"></div>
+<div style="float:left;margin-left:50px; width:60%" id="test_data"></div>
+</div>
+
+<div style="clear:both;"></div>
+<div >
+<p>-----------------------------------------------华丽的风格线------------------------------------------------------------</p>
+<%= link_to '完成', test_plans_path %>
+</div>
+<script>
+$(".checkbox_test_case").click(function(){
+
+	 if ($(this).is(":checked")) {
+         
+
+
+
+	 		 $.ajax({
+             type: "POST",
+             url: "/test_plan_cases",
+             data: {"test_plan_case[test_case_id]":$(this).attr("id"), "test_plan_case[test_plan_id]":"<%=@test_plan.id%>"},
+             dataType: "json",
+             success: function(data){
+             		
+                      }
+         });
+        }else{
+        	$.ajax({
+             type: "DELETE",
+             url: "/test_plan_cases/1",
+             data: {"test_plan_case[test_case_id]":$(this).attr("id"), "test_plan_case[test_plan_id]":"<%=@test_plan.id%>"},
+             dataType: "json",
+             success: function(data){
+             		
+                      }
+         });
+        }
+})
+
+
+
+
+
+$("#set_data").bind("click",function(){
+alert();
+$(".test_data_class").each(function(){
+
+  $.ajax({
+             type: "GET",
+             url: "/test_plan_case/set_data",
+             data: {"test_plan_data[:test_case_id]":"<%=params[:test_case_id]%>","test_plan_data[:test_flow_id]": $(this).attr("test_flow_id")},
+             dataType: "json",
+             success: function(data){
+                
+                      }
+         });
+
+})
+
+
+
+})
+
+  </script>

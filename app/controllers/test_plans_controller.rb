@@ -26,6 +26,8 @@ class TestPlansController < ApplicationController
   def new
     @test_plan = TestPlan.new
 
+
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @test_plan }
@@ -44,7 +46,7 @@ class TestPlansController < ApplicationController
 
     respond_to do |format|
       if @test_plan.save
-        format.html { redirect_to @test_plan, notice: 'Test plan was successfully created.' }
+        format.html { redirect_to new_test_plan_case_path(:test_plan_id=>@test_plan.id), notice: 'Test case was successfully created.' }
         format.json { render json: @test_plan, status: :created, location: @test_plan }
       else
         format.html { render action: "new" }
@@ -80,4 +82,47 @@ class TestPlansController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def excuse
+    @test_plan = TestPlan.find(params[:id])
+
+     TestResult.delete_all("test_plan_id = #{@test_plan.id}")
+
+      Thread.new  do  
+          @test_plan.excuse
+       end  
+    
+     respond_to do |format|
+      format.html { redirect_to test_plans_url }
+      format.json { head :no_content }
+    end
+  end
+
+
+  def pro
+      @test_plan = TestPlan.find(params[:id])
+
+      testScript = TestScript.new 
+
+      testScript.db_plan_script(@test_plan)
+
+      @test_plan.file_script
+
+      respond_to do |format|
+      format.html { redirect_to test_plans_url }
+      format.json { head :no_content }
+    end
+
+  end
+
+
+  def result
+
+  @test_plan = TestPlan.find(params[:id])
+
+  @test_results = @test_plan.test_results
+
+  end
+
+
 end

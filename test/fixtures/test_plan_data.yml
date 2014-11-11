@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  test_plan_id: MyString
+  test_case_flow_id: MyString
+
+two:
+  test_plan_id: MyString
+  test_case_flow_id: MyString

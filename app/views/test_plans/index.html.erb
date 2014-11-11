@@ -3,17 +3,22 @@
 <table>
   <tr>
     <th>名称</th>
-    <th></th>
-    <th></th>
+    <th>用例数(测试用例数X数据)</th>
+    <th>最近一次执行脚本的错误用例数</th>
     <th></th>
   </tr>
 
 <% @test_plans.each do |test_plan| %>
   <tr>
     <td><%= test_plan.name %></td>
-    <td><%= link_to 'Show', test_plan %></td>
-    <td><%= link_to 'Edit', edit_test_plan_path(test_plan) %></td>
-    <td><%= link_to 'Destroy', test_plan, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= test_plan.test_num %></td>
+    <td><%= test_plan.get_error_cast_num %></td>
+    <td><%= link_to '查看', test_plan %></td>
+    <td><%= link_to '编辑', edit_test_plan_path(test_plan) %></td>
+    <td><%= link_to '生成所有脚本', pro_test_plan_path(test_plan) %></td>
+    <td><%= link_to '开始运行', excuse_test_plan_path(test_plan) %></td>
+     <td><%= link_to '查看最近一次运行结果', result_test_plan_path(test_plan),:target=>"_blank" %></td>
+    <td><%= link_to '删除', test_plan, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>

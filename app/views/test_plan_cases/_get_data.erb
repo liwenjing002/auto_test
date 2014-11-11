@@ -1,0 +1,61 @@
+<p>
+  <b>用例名:</b>
+  <%= @test_case.title %>
+</p>
+
+
+<table border="1">
+  <tr>
+    <th>步骤</th>
+    <th>动作类型</th>
+    <th>元素定位</th>
+    <th>数据类型</th>
+    <th>数据</th>
+  </tr>
+
+  
+    <% @test_case.test_case_flows.each do |test_case_flow| %>
+    <tr>
+    <td><%= test_case_flow.flow_seq %></td>
+    <td><%= test_case_flow.flow_type.name %></td>
+    <td><%= test_case_flow.flow_location %></td>
+    <td><%= test_case_flow.flow_date_type.name %></td>
+    <td>
+
+      <%if test_case_flow.flow_date!='' and test_case_flow.get_test_data_by_plan(params[:test_plan_id])==nil %>
+      <input value="<%= test_case_flow.flow_date %>" class="test_data_class" test_flow_id="<%= test_case_flow.id %>"> 
+      <%end%>
+
+      <%if test_case_flow.get_test_data_by_plan(params[:test_plan_id]) !=nil %>
+      <input value="<%= test_case_flow.get_test_data_by_plan(params[:test_plan_id]).test_data %>" class="test_data_class" test_flow_id="<%= test_case_flow.id %>"> 
+      <%end%>
+
+    </td>
+     </tr>
+    <% end %>
+  
+
+</table>
+  <%= link_to '完成', "javascript:void(0)",:id=>"set_data" %>
+<script type="text/javascript">
+$("#set_data").bind("click",function(){
+
+$(".test_data_class").each(function(){
+
+  $.ajax({
+             type: "POST",
+             url: "/test_plan_case/set_data",
+             data: {"test_plan_data[test_plan_id]":"<%=params[:test_plan_id]%>","test_plan_data[test_case_flow_id]": $(this).attr("test_flow_id"),"test_plan_data[test_data]": $(this).val()},
+             dataType: "json",
+             success: function(data){
+                
+                      }
+         });
+
+})
+
+
+
+})
+
+  </script>

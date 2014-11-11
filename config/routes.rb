@@ -18,9 +18,23 @@ AutoTest::Application.routes.draw do
 
   match 'home/index' => 'home#index'
   
+  get '/test_plan_case/get_data' => "test_plan_cases#get_data"
+  post '/test_plan_case/set_data' => "test_plan_cases#set_data"
+
+
   get '/test_cases/:id/pro' => "test_cases#pro", :as => "pro_test_cases"
 
   get '/test_cases/:id/excuse' => "test_cases#excuse", :as => "excuse_test_cases"
+
+
+  get '/test_plans/:id/excuse' => "test_plans#excuse", :as => "excuse_test_plan"
+
+  get '/test_plans/:id/result' => "test_plans#result", :as => "result_test_plan"
+
+
+  get '/test_plans/:id/pro' => "test_plans#pro", :as => "pro_test_plan"
+
+
 
   root :to => 'home#index'
 
