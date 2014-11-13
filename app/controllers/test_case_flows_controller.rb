@@ -43,15 +43,31 @@ class TestCaseFlowsController < ApplicationController
   # POST /test_case_flows.json
   def create
     @test_case_flow = TestCaseFlow.new(params[:test_case_flow])
-    @test_case_flow_new = TestCaseFlow.new
-    @test_case_flow_new.test_case_id= @test_case_flow.test_case_id
-    @test_case_flow_new.flow_seq = @test_case_flow.flow_seq + 1
+    
     respond_to do |format|
-      if @test_case_flow.save
+
+      testFlowOld = TestCaseFlow.where("test_case_id = ? and flow_seq = ? ",@test_case_flow.test_case_id,@test_case_flow.flow_seq)
+      
+      testFlowLast = TestCaseFlow.where("test_case_id = ?",@test_case_flow.test_case_id).order("flow_seq desc").first
+
+
+      if testFlowOld.length == 0 and @test_case_flow.save
+        @test_case_flow_new = TestCaseFlow.new
+        @test_case_flow_new.test_case_id= @test_case_flow.test_case_id
+      
+        if testFlowLast != nil
+        @test_case_flow_new.flow_seq = testFlowLast.flow_seq + 1
+        else
+        @test_case_flow_new.flow_seq = @test_case_flow.flow_seq + 1  
+        end
+        @test_case_flow_new.save
         format.js { render :layout => false }
         format.html { redirect_to @test_case_flow, notice: 'Test case flow was successfully created.' }
         format.json { render json: @test_case_flow, status: :created, location: @test_case_flow }
       else
+        testFlowOld[0].update_attributes(params[:test_case_flow])
+
+        format.js { render :layout => false }
         format.html { render action: "new" }
         format.json { render json: @test_case_flow.errors, status: :unprocessable_entity }
       end
@@ -62,9 +78,14 @@ class TestCaseFlowsController < ApplicationController
   # PUT /test_case_flows/1.json
   def update
     @test_case_flow = TestCaseFlow.find(params[:id])
-
+    testFlowLast = TestCaseFlow.where("test_case_id = ?",@test_case_flow.test_case_id).order("flow_seq desc").first
+    @test_case_flow_new = TestCaseFlow.new
+    @test_case_flow_new.test_case_id= @test_case_flow.test_case_id
+    @test_case_flow_new.flow_seq = testFlowLast.flow_seq + 1
+     @test_case_flow_new.save
     respond_to do |format|
       if @test_case_flow.update_attributes(params[:test_case_flow])
+        format.js { render :layout => false }
         format.html { redirect_to @test_case_flow, notice: 'Test case flow was successfully updated.' }
         format.json { head :no_content }
       else

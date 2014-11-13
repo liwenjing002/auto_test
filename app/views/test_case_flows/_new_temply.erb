@@ -1,3 +1,4 @@
+<%if @test_case_flow_new != nil %>
  <div>
     <%= form_for(@test_case_flow_new, :remote => true) do |f| %>
     <%= f.text_field :test_case_id,:type=>'hidden' %>
@@ -9,3 +10,4 @@
     <%= f.submit :保存 %>
     <% end %>
  </div>
+   <% end %>

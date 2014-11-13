@@ -6,6 +6,7 @@ if(e.which ==3){
 						msg_type: "get_elm",
 						id: $(e.target).attr("id"),
 						type: e.target.localName,
+						elm_type: $(e.target).attr("type"),
 						class: $(e.target).attr("class"),
 						name: $(e.target).attr("name"),
 						value:$(e.target).attr("value"),

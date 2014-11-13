@@ -62,7 +62,7 @@ class TestPlansController < ApplicationController
 
     respond_to do |format|
       if @test_plan.update_attributes(params[:test_plan])
-        format.html { redirect_to @test_plan, notice: 'Test plan was successfully updated.' }
+        format.html { redirect_to new_test_plan_case_path(:test_plan_id=>@test_plan.id), notice: 'Test case was successfully created.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
