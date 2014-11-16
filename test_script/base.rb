@@ -1,10 +1,53 @@
 #encoding: utf-8
 
 require 'win32api'
-
+require 'dl'
+require 'net/http'
+require 'net/https'
+require 'net/ssh'
 def user32(name, param_types, return_value)
         Win32API.new 'user32' , name, param_types, return_value
 end
+
+
+$key_map = {  
+'1' => 201,  
+'2' => 202,  
+'3' => 203,  
+'4' => 204,   
+'5' => 205,  
+'6' => 206,  
+'7' => 207,  
+'8' => 208,  
+'9' => 209,  
+'0' => 210,  
+'a' => 401,  
+'b' => 505,  
+'c' => 503,  
+'d' => 403,  
+'e' => 303,  
+'f' => 404,  
+'g' => 405,  
+'h' => 406,  
+'i' => 308,  
+'j' => 407,  
+'k' => 408,  
+'l' => 409,  
+'m' => 507,  
+'n' => 506,  
+'o' => 309,  
+'p' => 310,  
+'q' => 301,  
+'r' => 304,  
+'s' => 402,  
+'t' => 305,  
+'u' => 307,  
+'v' => 504,   
+'w' => 302,  
+'x' => 502,  
+'y' => 306,
+'z' => 501
+}
 
 
 
@@ -146,34 +189,117 @@ def do_input(b,json,data)
     json.delete(:type)
     t = get_element(b,json,type)
     if(t.exists?)
-      if type != 'embed'
-     # t.set data
-        t.click
-        sleep 1
-        puts "点击后等待1s" 
+      if type != 'embed' && type != 'object'
+       
+        t.set data
 
-        keybd_event = user32 'keybd_event' , ['I' , 'I' , 'L' , 'L' ], 'V'
-        keydown = 0
-        keyup = 2
-        t.click
-        data.each_byte do |b|
-           puts "输入：" + b.to_s
-           keybd_event.call b, 0, keydown, 0
-          sleep 0.05
-         end
-      
+        # t.focus
+        # keybd_event = user32 'keybd_event' , ['I' , 'I' , 'L' , 'L' ], 'V'
+        # keydown = 0
+        # keyup = 2
+        # t.click
+        # data.each_byte do |b|
+        #    puts "控件输入：" + b.to_s
+        #    keybd_event.call b, 0, keydown, 0
+        #   sleep 1
+        # end
 
       else
-         t.click
-        keybd_event = user32 'keybd_event' , ['I' , 'I' , 'L' , 'L' ], 'V'
-        keydown = 0
-        keyup = 2
-        t.click
-        data.each_byte do |b|
-           puts "控件输入：" + b.to_s
-           keybd_event.call b, 0, keydown, 0
-          sleep 0.05
-         end
+   
+
+        last_window_index = b.windows.length - 1
+    
+         w = b.window(:index => last_window_index).use 
+        find_window  = user32 'FindWindowA'  , ['P' , 'P' ], 'L'
+
+        title =  w.title.encode("GB2312") + " - Google Chrome".encode("GB2312")
+
+       
+        puts title
+        dialog  = find_window.call nil, title
+        puts "获取窗体: #{dialog}"
+
+        set_fore_window = user32 'SetForegroundWindow', ['L'], 'L'
+        set_fore_window.call dialog
+
+
+        get_dlg_item = user32 'GetDlgItem' , ['L' , 'L' ], 'L'
+        i = passwordObject('1')
+        puts "控件id：" + i.to_s
+        pa_object = get_dlg_item.call dialog, i
+
+
+        puts "获取控件: #{pa_object}"
+
+        get_window_rect = user32 'GetWindowRect' , ['L' , 'P' ], 'I'
+        rectangle = [0, 0, 0, 0].pack 'L*'
+        get_window_rect.call pa_object, rectangle
+        left, top, right, bottom = rectangle.unpack 'L*'
+
+        puts "控件坐标：" + left.to_s + right.to_s
+
+        set_cursor_pos = user32 'SetCursorPos' , ['L' , 'L' ], 'I'
+        mouse_event = user32 'mouse_event' , ['L' , 'L' , 'L' , 'L' , 'L' ], 'V'
+        left_down = 0x0002
+        left_up = 0x0004
+        center = [(left + right) / 2, (top + bottom) / 2]
+        set_cursor_pos.call *center
+        mouse_event.call left_down, 0, 0, 0, 0
+        mouse_event.call left_up, 0, 0, 0, 0
+
+        dll_file = File.dirname(__FILE__)+'/DD32.dll' 
+
+        if File::exists?(dll_file)
+        puts "dll文件存在"
+
+        end
+
+
+        test  =  Win32API.new dll_file , 'DD_todc', 'I', 'I'
+
+        result1 =  test.call 28
+        puts "111" + result1.to_s
+       
+        initializeWinIo  =  Win32API.new dll_file , 'DD_str', 'S', 'I'
+       
+
+        key  =  Win32API.new dll_file , 'DD_key', ['I','I'], 'I'
+
+        sleep 4
+        #不知道为什么得先输入一下键盘
+        key.call 600,1
+        key.call 600,2
+    
+
+        data.split("").each do |word|
+          puts "输入：" + word
+          key.call $key_map [word],1
+          puts "输入码表：" + $key_map [word].to_s
+          key.call $key_map [word],2
+        end
+
+
+
+    
+
+        
+        # keybd_event = user32 'keybd_event' , ['I' , 'I' , 'L' , 'L' ], 'V'
+        # keydown = 0
+        # keyup = 2
+        # sleep 2
+        # data =  data.encode("GB2312")
+
+        # puts data
+
+        # i = 0
+        # data.upcase.each_byte  do |b|
+        #    puts "控件输入：#{i.to_s} 次" + b.to_s 
+        #    i = i+ 1
+        #    keybd_event.call b, 0, keydown, 0
+        #     sleep 1
+        #     keybd_event.call b, 0, keyup, 0
+        #   sleep 1
+        #  end
         
         
       end
@@ -195,6 +321,18 @@ def do_input(b,json,data)
   
   return b
 end
+
+def passwordObject(type)
+
+  if type =='1'
+    return 00000000
+  end
+  if type=='2'
+    return 05133644
+  end
+
+end
+
 
 #处理浏览器
 def do_brower(b,brower)
@@ -232,6 +370,7 @@ def do_click(b,json,data)
   end
   if t.exists?
     t.click
+    sleep 1
     puts "点击成功------------------"
     return b
   else
@@ -260,7 +399,7 @@ def do_assert(b,json,data)
      if  t.text() ==data
        puts "对比成功，进入下一步------------------"
      else
-      msg = '对比失败,目前内容为: '  + text 
+      msg = '对比失败,目前内容为: '  + t.text() 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
       b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
@@ -282,6 +421,64 @@ def do_assert(b,json,data)
   end
 end
 
+
+def do_checkcode(b,json,data)
+  checkCode = nil
+  ssh = Net::SSH.start('106.187.37.16', 'root', :password => 'lwj1988@A') do |ssh|
+  checkCode = ssh.exec!('tail -200 /home/lee/logs/test.log | grep \'checkcode\'')
+  puts checkCode
+  end
+  reg = Regexp.new(data) 
+  checkCode = reg.match(checkCode)
+  if checkCode!= nil and checkCode[1] != nil
+    checkCode = checkCode[1] 
+    do_input b,json,checkCode
+  else
+    msg = '后台获取验证码失败,类型: '  + type 
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    b.quit
+  end
+ 
+end
+
+
+
+
+
+
+
+
+def CheckCode_ok(gifurl,checkCode)
+#获取验证码图片
+ 
+  url = URI.parse(gifurl)
+ 
+  http = Net::HTTP.new(url.host, url.port)
+  http.use_ssl = true if url.scheme == 'https'
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE #这个也很重要
+
+  request = Net::HTTP::Get.new(url.path)
+
+  File.open("C:\\CheckImg.jpg", "wb") do |file|
+  file.write(http.request(request).body)
+  file.close
+  end
+#end
+#执行批处理文件
+  system("c:\\CheckBat.bat")
+#获取txt中的验证码
+  if File.exists?("c:\\CheckCode.txt") ==true
+    File.open("c:\\CheckCode.txt","r") do |line|
+    checkCode= line.readline
+    line.close
+    end
+  end
+  puts checkCode
+  return checkCode
+end
 
 
 
