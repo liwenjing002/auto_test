@@ -34,6 +34,7 @@ AutoTest::Application.routes.draw do
 
   get '/test_plans/:id/pro' => "test_plans#pro", :as => "pro_test_plan"
 
+  get '/test_plans/:id/script' => "test_plans#script", :as => "script_test_plan"
 
 
   root :to => 'home#index'

@@ -34,4 +34,8 @@ AutoTest::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+
+  config.gem "coderay"    
+  config.gem "RedCloth"  
 end

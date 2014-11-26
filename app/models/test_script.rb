@@ -20,20 +20,21 @@ class TestScript < ActiveRecord::Base
   
 
       test_plan.test_cases.each do |test_case|
-        self.id = nil
-        self.test_case_id = test_case.id
-        self.test_plan_id = test_plan.id
-        self.script_content =  '#encoding: utf-8'  + "\n"
-        self.script_content = script_content   + 'require \'watir-webdriver\' '  + "\n"
+        puts 'create one case'
+        test_temp = TestScript.new 
+        test_temp.test_case_id = test_case.id
+        test_temp.test_plan_id = test_plan.id
+        test_temp.script_content =  '#encoding: utf-8'  + "\n"
+        test_temp.script_content = test_temp.script_content   + 'require \'watir-webdriver\' '  + "\n"
 
-        self.script_content = script_content   + '$LOAD_PATH.unshift(File.dirname(__FILE__))'  + "\n"
-        self.script_content = script_content   + 'require  \'./test_script/base.rb\''  + "\n"
+        test_temp.script_content = test_temp.script_content   + '$LOAD_PATH.unshift(File.dirname(__FILE__))'  + "\n"
+        test_temp.script_content = test_temp.script_content   + 'require  \'./test_script/base.rb\''  + "\n"
 
-        self.script_content = script_content   + 'b= nil'  + "\n"
+        test_temp.script_content = test_temp.script_content   + 'b= nil'  + "\n"
 
 
 
-        setTestFlow(test_case,self,test_plan,0)
+        setTestFlow(test_case,test_temp,test_plan,0)
 
       end 
 
@@ -47,37 +48,61 @@ class TestScript < ActiveRecord::Base
 
     test_case_flows = test_case.test_case_flows
 
+    if index <= test_case_flows.length - 1
     for i in index..(test_case_flows.length - 1)
 
         test_plan_datas = TestPlanData.where("test_case_flow_id = ? and test_plan_id = ?",test_case_flows[i].id,test_plan.id).first
 
         if test_plan_datas !=nil
           test_datas =test_plan_datas.test_data.split("\|")
+
+          test_datas.each do |d|
+            ranges = d.split("\-")
+              if ranges.length > 1
+                 test_datas.delete(d)
+                for m in (ranges[0].to_i)..(ranges[1].to_i)
+                  test_datas.push m.to_s
+                end
+              end
+              
+            end
+          
+
         else
           test_datas= ['']
         end
 
-
+        p '--------------------------------------------------------'
+        p test_datas
 
 
         script_content_old = testScript.script_content
+
+        next_flow = i+1
 
         for j in 0..test_datas.length-1
 
             testScript.script_content = script_content_old
 
+            if test_case_flows[i].flow_type.code == 'checkCode'
+              data = {:reg=>test_datas[j],:host=>test_plan.host,:user=>test_plan.user_name,:password=>test_plan.pd,:log_path=>test_plan.log_path}
             testScript.script_content = script_content_old  + 'b = do_' + test_case_flows[i].flow_type.code + 
         ' b,' + (test_case_flows[i].flow_location=='' ? '' : test_case_flows[i].flow_location  + ',')  + 
+           data.to_s  + "\r\n"
+            else
+               testScript.script_content = script_content_old  + 'b = do_' + test_case_flows[i].flow_type.code + 
+        ' b,' + (test_case_flows[i].flow_location=='' ? '' : test_case_flows[i].flow_location  + ',')  + 
         '\''  +  test_datas[j] + '\''  + "\r\n"
-
+            end
             if j !=test_datas.length-1
                testScriptClone = testScript.clone
-               setTestFlow(test_case,testScriptClone,test_plan,(i+1))
+               setTestFlow(test_case,testScriptClone,test_plan,next_flow)
             end
 
         end
 
     end
+   end
     testScript.script_content = testScript.script_content   + 'b.quit'  + "\n"
     testScript.id = nil
     test_plan.test_num = test_plan.test_num + 1

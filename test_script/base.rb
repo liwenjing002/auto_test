@@ -9,6 +9,8 @@ def user32(name, param_types, return_value)
         Win32API.new 'user32' , name, param_types, return_value
 end
 
+$password_time = 0
+
 
 $key_map = {  
 '1' => 201,  
@@ -68,7 +70,7 @@ def get_element(b,data,type)
     
     t = getByType(type, b, data)
     
-    if t.exists?
+    if t==nil or t.exists?
       puts "类型为：" + type + ",全量匹配，找到元素--------退出寻找"
       return t 
     else
@@ -180,8 +182,6 @@ end
 
 #处理输入
 def do_input(b,json,data)
-  puts 
-  puts 00
   puts "华丽的分割线-----------------------------------------------------------------------"
   puts "开始处理输入------------------"
   if (json[:type] !=nil ) 
@@ -190,22 +190,15 @@ def do_input(b,json,data)
     t = get_element(b,json,type)
     if(t.exists?)
       if type != 'embed' && type != 'object'
-       
+        t.focus
+        t.click
         t.set data
-
-        # t.focus
-        # keybd_event = user32 'keybd_event' , ['I' , 'I' , 'L' , 'L' ], 'V'
-        # keydown = 0
-        # keyup = 2
-        # t.click
-        # data.each_byte do |b|
-        #    puts "控件输入：" + b.to_s
-        #    keybd_event.call b, 0, keydown, 0
-        #   sleep 1
-        # end
+        t.send_keys([:tab])
 
       else
-   
+     
+
+
 
         last_window_index = b.windows.length - 1
     
@@ -226,6 +219,8 @@ def do_input(b,json,data)
         get_dlg_item = user32 'GetDlgItem' , ['L' , 'L' ], 'L'
         i = passwordObject('1')
         puts "控件id：" + i.to_s
+
+
         pa_object = get_dlg_item.call dialog, i
 
 
@@ -265,23 +260,62 @@ def do_input(b,json,data)
 
         key  =  Win32API.new dll_file , 'DD_key', ['I','I'], 'I'
 
-        sleep 4
+        sleep 3
         #不知道为什么得先输入一下键盘
         key.call 600,1
+         sleep 0.5
         key.call 600,2
     
-
+        puts "开始输入：" 
         data.split("").each do |word|
           puts "输入：" + word
           key.call $key_map [word],1
+          
           puts "输入码表：" + $key_map [word].to_s
           key.call $key_map [word],2
+          if json[:id]=='_ocx_password'
+          sleep 1
+          end
         end
 
 
+        #输入控件后需要将鼠标移开
+        get_window_rect = user32 'GetWindowRect' , ['L' , 'P' ], 'I'
+        rectangle = [0, 0, 0, 0].pack 'L*'
+        get_window_rect.call dialog, rectangle
+        left, top, right, bottom = rectangle.unpack 'L*'
 
-    
+        puts "窗体坐标：" + left.to_s + right.to_s
 
+        set_cursor_pos = user32 'SetCursorPos' , ['L' , 'L' ], 'I'
+        mouse_event = user32 'mouse_event' , ['L' , 'L' , 'L' , 'L' , 'L' ], 'V'
+        left_down = 0x0002
+        left_up = 0x0004
+        center = [(left + right) / 2, (top + bottom) / 2]
+        set_cursor_pos.call *center
+        mouse_event.call left_down, 0, 0, 0, 0
+        mouse_event.call left_up, 0, 0, 0, 0
+      
+        
+
+         
+        if json[:id] == 'userpasswdNP'
+        puts '先锋支付控件额外处理'
+        test_script ='var userpasswd = GetActiveX();$(\'#userpasswdNP\').attr(\'test_length\',userpasswd.GetLength())'
+        b.execute_script(test_script)
+        sleep 0.5
+
+        input_length = t.attribute_value('test_length')
+
+        puts "控件输入长度为：" + input_length.to_s
+        puts "控件应该输入长度为：" +  data.split("").length.to_s
+        if input_length.to_i != data.split("").length
+          puts "控件没有完全输入内容，再次输入"
+          json[:type] = type
+          do_input(b,json,data)
+        end
+        end
+        
         
         # keybd_event = user32 'keybd_event' , ['I' , 'I' , 'L' , 'L' ], 'V'
         # keydown = 0
@@ -336,21 +370,28 @@ end
 
 #处理浏览器
 def do_brower(b,brower)
+  b = nil
   if brower =='chrome'
     b = Watir::Browser.new :chrome, :switches => %w[--allow-outdated-plugins --always-authorize-plugins --no-default-browser-check]   
-
-    return b 
   end
   
   if brower =='ie'
     b = Watir::Browser.new :ie
-    return b 
   end
   
   if brower =='firefox'
     b = Watir::Browser.new :firefox
-    return b 
   end
+
+   # 如果3s内还定位不到则抛出异常
+   # b.driver.manage.timeouts.implicit_wait = 300 # seconds
+
+  # # 页面加载超时时间设置为5s
+  # b.driver.manage.page_load = 300 #seconds
+
+  # # 异步脚本的超时时间设置成3s 
+  # b.driver.manage.script_timeout = 300 #seconds
+  return b 
   
 end
 
@@ -363,12 +404,13 @@ def do_click(b,json,data)
   type = json[:type]
   json.delete(:type)
   if type== 'input'
-    puts "inout类型点击判断类型为按钮，处理按钮------------------"
+    puts "input类型点击判断类型为按钮，处理按钮------------------"
     t = get_element(b,json,'button')
   else
      t = get_element(b,json,type)
   end
   if t.exists?
+    sleep 1
     t.click
     sleep 1
     puts "点击成功------------------"
@@ -385,6 +427,56 @@ def do_click(b,json,data)
     raise msg
   end
 end
+
+def do_sleep(b,data)
+  puts "开始等待" + data.to_s + "秒"
+  last_window_index = b.windows.length - 1
+  puts "使用第" + (last_window_index).to_s + "个窗口"
+  w = b.window(:index => last_window_index).use 
+  puts "当前窗口url:" + w.url 
+  
+  sleep_time = data.to_i
+
+
+  while sleep_time > 0  do
+   sleep 10 
+   sleep_time = sleep_time -10 
+   puts "还有" + sleep_time.to_s + "秒" ;
+  end
+
+  puts "等待" + data.to_s + "秒结束"
+  return b
+end
+
+def do_select(b,json,data)
+
+  puts "华丽的分割线-----------------------------------------------------------------------"
+  puts "开始处理下拉框选择------------------"
+  type = json[:type]
+  json.delete(:type)
+ 
+  t = get_element(b,json,type)
+
+  if t.exists?
+    
+    t.select  data
+    puts "下拉框选择成功------------------"
+    return b
+  else
+    puts "找不到元素，点击结束-----------"
+
+    msg = '找不到元素,类型: '  + type 
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    b.quit
+    raise msg
+  end
+
+end
+
+
 
 def do_assert(b,json,data)
   puts "华丽的分割线-----------------------------------------------------------------------"
@@ -422,24 +514,33 @@ def do_assert(b,json,data)
 end
 
 
-def do_checkcode(b,json,data)
+def do_checkCode(b,json,data)
   checkCode = nil
-  ssh = Net::SSH.start('106.187.37.16', 'root', :password => 'lwj1988@A') do |ssh|
-  checkCode = ssh.exec!('tail -200 /home/lee/logs/test.log | grep \'checkcode\'')
-  puts checkCode
-  end
-  reg = Regexp.new(data) 
-  checkCode = reg.match(checkCode)
-  if checkCode!= nil and checkCode[1] != nil
-    checkCode = checkCode[1] 
-    do_input b,json,checkCode
-  else
-    msg = '后台获取验证码失败,类型: '  + type 
-    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+  ssh = Net::SSH.start(data[:host], data[:user], :password => data[:password]) do |ssh|
+    puts "远程执行命令：" + "tail -100 "+  data[:log_path] + "| grep #{data[:reg].split(':')[0]}"
+    checkCode = ssh.exec!("tail -100 "+  data[:log_path] + "| grep #{data[:reg].split(':')[0]}")
+    
 
-    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
-    b.quit
+    puts "get code back:" + checkCode ? checkCode : ""
+  
+
+    reg = Regexp.new(data[:reg]) 
+    listcode = checkCode.scan(reg)
+
+    if listcode.length != 0 
+      last_index = listcode.length - 1
+      checkCode =  listcode[last_index]
+      do_input b,json,checkCode
+      sleep 1
+      return b
+    else
+      msg = '后台获取验证码失败' 
+      screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+      b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+
+      msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+      b.quit
+    end
   end
  
 end

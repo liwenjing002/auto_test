@@ -13,7 +13,7 @@
     <td><%= test_result.test_plan.name %></td>
     <td><%= test_result.test_case.title %></td>
     <td><%= test_result.test_result_content.html_safe %></td>
-    <td><%= link_to '查看脚本', test_result.test_case ,:target=>"_blank" %></td>
+    <td><%= link_to '查看脚本', script_test_plan_path(:id=>test_result.test_script_id) ,:target=>"_blank" %></td>
   </tr>
 <% end %>
 </table>

@@ -125,4 +125,11 @@ class TestPlansController < ApplicationController
   end
 
 
+  def script
+
+    @testScript = TestScript.find(params[:id])
+
+  end
+
+
 end

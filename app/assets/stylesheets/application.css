@@ -11,3 +11,36 @@
  *= require_self
  *= require_tree .
  */
+ .CodeRay {     
+background-color: #232323;     
+border: 1px solid black;     
+font-family: 'Courier New', 'Terminal', monospace;     
+color: #E6E0DB;     
+padding: 3px 5px;     
+overflow: auto;     
+font-size: 12px;     
+margin: 12px 0;     
+}     
+.CodeRay pre {     
+margin: 0px;     
+padding: 0px;     
+}     
+  
+.CodeRay .an { color:#E7BE69 }                      /* html 属性*/    
+.CodeRay .c  { color:#BC9358; font-style: italic; } /* 注释 */    
+.CodeRay .ch { color:#509E4F }                      /* 转义字符 */    
+.CodeRay .cl { color:#FFF }                         /* 类 */    
+.CodeRay .co { color:#FFF }                         /* 常数 */    
+.CodeRay .fl { color:#A4C260 }                      /* 浮点数 */    
+.CodeRay .fu { color:#FFC56D }                      /* 方法 */    
+.CodeRay .gv { color:#D0CFFE }                      /* 全局变量 */    
+.CodeRay .i  { color:#A4C260 }                      /* 整型 */    
+.CodeRay .il { background:#151515 }                 /* 内联代码 */    
+.CodeRay .iv { color:#D0CFFE }                      /* 实例变量 */    
+.CodeRay .pp { color:#E7BE69 }                      /* 文档类型 */    
+.CodeRay .r  { color:#CB7832 }                      /* 关键字 */    
+.CodeRay .rx { color:#A4C260 }                      /* 正则表达式 */    
+.CodeRay .s  { color:#A4C260 }                      /* 字符串 */    
+.CodeRay .sy { color:#6C9CBD }                      /* 符号 */    
+.CodeRay .ta { color:#E7BE69 }                      /* html 标签 */    
+.CodeRay .pc { color:#6C9CBD }                      /* 布尔型 */   

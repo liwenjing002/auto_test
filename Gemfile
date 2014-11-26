@@ -1,7 +1,7 @@
 source 'https://ruby.taobao.org'
 gem 'watir-webdriver' 
 gem 'rails', '3.2.18'
-
+gem 'thin'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -21,6 +21,9 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+gem "coderay"    
+gem "RedCloth"  
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

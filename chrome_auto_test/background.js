@@ -53,7 +53,7 @@ chrome.extension.onRequest.addListener(
       if(request.name!=null && request.name!=''){
         elm = elm + ":name=>\"" + request.name + '\",'
       }
-      if(request.textContent!=null && request.textContent!=''){
+      if(request.textContent!=null && request.textContent!='' && request.type != 'select'){
         elm = elm + ":text=>\"" + $.trim(request.textContent) + '\",'
       }
       elm = elm + "}"

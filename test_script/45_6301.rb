@@ -12,6 +12,6 @@ b = do_input b,{:id=>"username",:type=>"input",:class=>"input-block-level n-inva
 b = do_input b,{:id=>"userpasswdNP",:type=>"embed",},'1988abc'
 
 
-b = do_checkcode b,{:id=>"checkCode",:type=>"input"},'checkcode:(.{4})'
+b = do_checkCode b,{:id=>"checkCode",:type=>"input"},{:reg=>'idcode:(.{4})',:host=>'106.187.37.16',:user=>"root",:password=>'lwj1988@A',:log_path=>"/home/lee/logs/test.log"}
 
 #b.quit
