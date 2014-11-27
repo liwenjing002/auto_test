@@ -383,6 +383,7 @@ def do_brower(b,brower)
     b = Watir::Browser.new :firefox
   end
 
+  b.driver.manage.window.maximize
    # 如果3s内还定位不到则抛出异常
    # b.driver.manage.timeouts.implicit_wait = 300 # seconds
 
