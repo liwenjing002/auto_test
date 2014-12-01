@@ -4,7 +4,10 @@
 
 // A generic onclick callback function.
 function genericOnClick(info, tab) {
-  chrome.tabs.onUpdated.addListener(checkForValidUrl);
+ start = 1;
+}
+function genericOnClick2(info, tab) {
+ start = 0;
 }
 
 // Create one test item for each context type.
@@ -12,19 +15,25 @@ function genericOnClick(info, tab) {
 
 // Create a parent item and two children.
 var parent1 = chrome.contextMenus.create({"title": "开始定位元素","onclick": genericOnClick});
+var parent2 = chrome.contextMenus.create({"title": "结束定位元素","onclick": genericOnClick2});
 
 
 var elm ='';
 
 var elm_date ="";
 
-
+var start = 0;
 
 
 
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     
+    if(start ==0){
+      return 
+    }
+
+
     if(request.msg_type=="get_elm"){
    //放数据
    if(elm=='')   {
@@ -50,6 +59,11 @@ chrome.extension.onRequest.addListener(
       if(request.class!=null && request.class!=''){
         elm = elm + ":class=>\"" + request.class + '\",'
       }
+
+  if(request.index!=null && request.index!=''){
+        elm = elm + ":index=>" + request.index + ','
+      }
+
       if(request.name!=null && request.name!=''){
         elm = elm + ":name=>\"" + request.name + '\",'
       }
