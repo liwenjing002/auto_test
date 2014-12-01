@@ -30,15 +30,18 @@
     <label  style="margin-left:160px"> 添加</label>
   </div>
    <% @test_case.test_case_flows.each do |test_case_flow| %>
- <div>
+ <div id="div_<%=test_case_flow.flow_seq%>" >
     <%= form_for(test_case_flow, :remote => true) do |f| %>
     <%= f.text_field :test_case_id,:type=>'hidden' %>
     <%= f.number_field :flow_seq,:readonly=>'readonly' %>
     <%= f.select :flow_type_id, FlowType.find(:all).collect {|p| [ p.name, p.id ] } %>
-    <%= f.text_field :flow_location,:id=>"test_case_flow_flow_location_#{test_case_flow.id}" %>
+    <%= f.text_field :flow_location,:id=>"test_case_flow_flow_location_#{test_case_flow.id}" ,:style=>"width:350px"%>
     <%= f.select :flow_date_type_id, FlowDateType.find(:all).collect {|p| [ p.name, p.id ] } %>
     <%= f.text_area :flow_date,:rows=>1,:style=>"margin-top:6px;margin-bottom:-6px" %>
+    <%= f.submit :保存并新增 %>
+    <%= f.submit :保存并插入 %>
     <%= f.submit :保存 %>
+    <%= link_to '删除本行', test_case_flow, method: :delete, data: { confirm: '确定删除' },:remote => true %>
     <% end %>
  </div>
   <% end %>

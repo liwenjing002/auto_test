@@ -1,3 +1,4 @@
+# encoding: utf-8
 class TestPlansController < ApplicationController
   # GET /test_plans
   # GET /test_plans.json
