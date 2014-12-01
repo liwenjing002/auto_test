@@ -1,6 +1,6 @@
 require 'fileutils'
 class TestPlan < ActiveRecord::Base
-	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num
+	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id
 
 
    	has_many :test_plan_cases, :dependent => :destroy
@@ -8,6 +8,7 @@ class TestPlan < ActiveRecord::Base
    	has_many :test_scripts, :dependent => :destroy
    	has_many :test_plan_datas, :dependent => :destroy
     has_many :test_results, :dependent => :destroy
+    belongs_to :user  
 
    	def file_script
    		path = "./test_script/" + self.id.to_s 
@@ -27,6 +28,10 @@ class TestPlan < ActiveRecord::Base
 
         control_file.write "begin \r\n"
   			control_file.write "load \'" + name + "\'\r\n"
+
+        control_file.write "testResult = TestResult.new(:test_script_id=>" + test_script.id.to_s + ",:test_plan_id=>" + test_script.test_plan_id.to_s + ",:test_case_id=>" + test_script.test_case_id.to_s  + ",:test_result_flag => true) \r\n"
+        control_file.write "testResult.save \r\n"
+
         control_file.write "rescue Exception => e \r\n"
         control_file.write "testResult = TestResult.new(:test_script_id=>" + test_script.id.to_s + ",:test_plan_id=>" + test_script.test_plan_id.to_s + ",:test_case_id=>" + test_script.test_case_id.to_s  + ",:test_result_content=>e.message,:test_result_flag => false) \r\n"
         control_file.write "testResult.save \r\n"
@@ -40,6 +45,7 @@ class TestPlan < ActiveRecord::Base
 
    	def excuse
 		load "./test_script/" + self.id.to_s + "/" + self.id.to_s + "_control.rb"
+    ResultMailer.send_mail(self.user.email,self.id).deliver
    	end
 
     def get_error_cast_num

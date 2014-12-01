@@ -60,7 +60,7 @@ chrome.extension.onRequest.addListener(
         elm = elm + ":class=>\"" + request.class + '\",'
       }
 
-  if(request.index!=null && request.index!=''){
+  if(request.index!=null ){
         elm = elm + ":index=>" + request.index + ','
       }
 

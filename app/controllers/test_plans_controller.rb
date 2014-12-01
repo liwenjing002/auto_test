@@ -3,8 +3,13 @@ class TestPlansController < ApplicationController
   # GET /test_plans
   # GET /test_plans.json
   def index
-    @test_plans = TestPlan.all
 
+    @test_plans = TestPlan.where("1=1") 
+    @test_plans = @test_plans.where("name like '%#{params[:title].strip}%'") if params[:title]  and params[:title] !=""
+    @test_plans = @test_plans.where("user_id = #{params[:user_id]} ") if params[:user_id] and params[:user_id] !=""
+    @test_plans = @test_plans.paginate :page => params[:page]||1,
+                            :per_page=>10,
+                            :order => 'created_at DESC'
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @test_plans }
@@ -44,7 +49,7 @@ class TestPlansController < ApplicationController
   # POST /test_plans.json
   def create
     @test_plan = TestPlan.new(params[:test_plan])
-
+    @test_plan.user_id = current_user.id
     respond_to do |format|
       if @test_plan.save
         format.html { redirect_to new_test_plan_case_path(:test_plan_id=>@test_plan.id), notice: 'Test case was successfully created.' }
@@ -60,9 +65,9 @@ class TestPlansController < ApplicationController
   # PUT /test_plans/1.json
   def update
     @test_plan = TestPlan.find(params[:id])
-
+    @test_plan.user_id = current_user.id
     respond_to do |format|
-      if @test_plan.update_attributes(params[:test_plan])
+      if @test_plan.user_id == current_user.id && @test_plan.update_attributes(params[:test_plan])
         format.html { redirect_to new_test_plan_case_path(:test_plan_id=>@test_plan.id), notice: 'Test case was successfully created.' }
         format.json { head :no_content }
       else

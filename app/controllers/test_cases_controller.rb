@@ -2,7 +2,14 @@ class TestCasesController < ApplicationController
   # GET /test_cases
   # GET /test_cases.json
   def index
-    @test_cases = TestCase.all
+
+    @test_cases = TestCase.where("1=1") 
+    @test_cases = @test_cases.where("title like '%#{params[:title].strip}%'") if params[:title]  and params[:title] !=""
+    @test_cases = @test_cases.where("user_id = #{params[:user_id]} ") if params[:user_id] and params[:user_id] !=""
+    @test_cases = @test_cases.paginate :page => params[:page]||1,
+                            :per_page=>10,
+                            :order => 'created_at DESC'
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,7 +48,7 @@ class TestCasesController < ApplicationController
   # POST /test_cases.json
   def create
     @test_case = TestCase.new(params[:test_case])
-
+    @test_case.user_id = current_user.id
     respond_to do |format|
       if @test_case.save
         format.html { redirect_to new_test_case_flow_path(:test_case_id=>@test_case.id), notice: 'Test case was successfully created.' }
@@ -57,9 +64,9 @@ class TestCasesController < ApplicationController
   # PUT /test_cases/1.json
   def update
     @test_case = TestCase.find(params[:id])
-
+   
     respond_to do |format|
-      if @test_case.update_attributes(params[:test_case])
+      if @test_case.user_id == current_user.id && @test_case.update_attributes(params[:test_case])
         format.html { redirect_to @test_case, notice: 'Test case was successfully updated.' }
         format.json { head :no_content }
       else
@@ -74,7 +81,6 @@ class TestCasesController < ApplicationController
   def destroy
     @test_case = TestCase.find(params[:id])
     @test_case.destroy
-
     respond_to do |format|
       format.html { redirect_to test_cases_url }
       format.json { head :no_content }
