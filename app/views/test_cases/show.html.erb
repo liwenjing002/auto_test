@@ -38,10 +38,10 @@
     <%= f.text_field :flow_location,:id=>"test_case_flow_flow_location_#{test_case_flow.id}" ,:style=>"width:350px"%>
     <%= f.select :flow_date_type_id, FlowDateType.find(:all).collect {|p| [ p.name, p.id ] } %>
     <%= f.text_area :flow_date,:rows=>1,:style=>"margin-top:6px;margin-bottom:-6px" %>
-    <%if current_user.id == @test_case.user_id%><%= f.submit :保存并新增 %><%end%>
-    <%if current_user.id == @test_case.user_id%><%= f.submit :保存并插入 %><%end%>
-    <%if current_user.id == @test_case.user_id%><%= f.submit :保存 %><%end%>
-    <%if current_user.id == @test_case.user_id%><%= link_to '删除本行', test_case_flow, method: :delete, data: { confirm: '确定删除' },:remote => true %><%end%>
+    <%if current_user.id.to_s == @test_case.user_id.to_s%><%= f.submit :保存并新增 %><%end%>
+    <%if current_user.id.to_s == @test_case.user_id.to_s%><%= f.submit :保存并插入 %><%end%>
+    <%if current_user.id.to_s == @test_case.user_id.to_s%><%= f.submit :保存 %><%end%>
+    <%if current_user.id.to_s == @test_case.user_id.to_s%><%= link_to '删除本行', test_case_flow, method: :delete, data: { confirm: '确定删除' },:remote => true %><%end%>
     <% end %>
  </div>
   <% end %>
