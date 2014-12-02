@@ -15,7 +15,7 @@
     <td><%= test_result.test_case.title %></td>
     <td><%= test_result.test_result_flag%></td>
     <td><%if test_result.test_result_content %><%= test_result.test_result_content.html_safe %><%end%></td>
-    <td><%if "#{current_user.id }"== "#{test_result.test_plan.user_id}"%><%= link_to '查看脚本', script_test_plan_path(:id=>test_result.test_script_id) ,:target=>"_blank" %><%end%></td>
+    <td><%= link_to '查看脚本', script_test_plan_url(:id=>test_result.test_script_id) ,:target=>"_blank" %></td>
   </tr>
 <% end %>
 </table>

@@ -10,7 +10,7 @@ def user32(name, param_types, return_value)
 end
 
 $password_time = 0
-
+$file_path = "E:\/code\/auto_test\/public\/screan_shot\/"
 
 $key_map = {  
 '1' => 201,  
@@ -131,7 +131,11 @@ def get_element(b,data,type)
 
   msg = '找不到元素,类型: '  + type 
   screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
   b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+  b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
   msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
   b.quit
@@ -160,8 +164,8 @@ def getByType type, b, data
    
   if (type == "select")
     t = b.select_list data
+     return t 
 	end
-	
 	
 
   eval("t = b."+ type + " data")
@@ -299,7 +303,7 @@ def do_input(b,json,data)
         
 
          
-        if json[:id] == 'userpasswdNP'
+        if json[:id] == 'userpasswdNP' or json[:id] == 'userpasswdNP1'
         puts '先锋支付控件额外处理'
         test_script ='var userpasswd = GetActiveX();$(\'#userpasswdNP\').attr(\'test_length\',userpasswd.GetLength())'
         b.execute_script(test_script)
@@ -342,7 +346,11 @@ def do_input(b,json,data)
       puts "找不到元素，输入结束-----------"
       msg = '找不到元素,类型: '  + type 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
       b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+      b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit
@@ -421,7 +429,11 @@ def do_click(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
     b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+    b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -468,7 +480,11 @@ def do_select(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
     b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+    b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -494,7 +510,11 @@ def do_assert(b,json,data)
      else
       msg = '对比失败,目前内容为: '  + t.text() 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
       b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+      b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit
@@ -506,7 +526,11 @@ def do_assert(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
     b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+    b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -537,7 +561,11 @@ def do_checkCode(b,json,data)
     else
       msg = '后台获取验证码失败' 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+<<<<<<< HEAD
       b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+=======
+      b.driver.save_screenshot $file_path + screenshot_path
+>>>>>>> e735a7b6d3b9641a60855dd3daa84a893a02e471
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit

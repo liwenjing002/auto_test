@@ -7,6 +7,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+<%if current_user%>
+<p>欢迎你， <%=current_user.email%> <%= link_to '退出', destroy_user_session_path, :method=>'delete' %></p>
+<%end%>
 <%= link_to '测试用例管理', test_cases_path %>
 
 <%= link_to '测试计划管理', test_plans_path %>

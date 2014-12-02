@@ -1,4 +1,6 @@
+# encoding: utf-8
 class TestCaseFlowsController < ApplicationController
+
   # GET /test_case_flows
   # GET /test_case_flows.json
   def index
@@ -61,12 +63,21 @@ class TestCaseFlowsController < ApplicationController
         @test_case_flow_new.flow_seq = @test_case_flow.flow_seq + 1  
         end
         @test_case_flow_new.save
+
+        #不新增一行
+        if params[:commit] == '保存'
+          @test_case_flow_new= nil
+        end
+
         format.js { render :layout => false }
         format.html { redirect_to @test_case_flow, notice: 'Test case flow was successfully created.' }
         format.json { render json: @test_case_flow, status: :created, location: @test_case_flow }
       else
         testFlowOld[0].update_attributes(params[:test_case_flow])
-
+        #不新增一行
+        if params[:commit] == '保存'
+          @test_case_flow_new= nil
+        end
         format.js { render :layout => false }
         format.html { render action: "new" }
         format.json { render json: @test_case_flow.errors, status: :unprocessable_entity }
@@ -81,10 +92,29 @@ class TestCaseFlowsController < ApplicationController
     testFlowLast = TestCaseFlow.where("test_case_id = ?",@test_case_flow.test_case_id).order("flow_seq desc").first
     @test_case_flow_new = TestCaseFlow.new
     @test_case_flow_new.test_case_id= @test_case_flow.test_case_id
+
+
     @test_case_flow_new.flow_seq = testFlowLast.flow_seq + 1
-     @test_case_flow_new.save
+    
+    if params[:commit] == '保存并插入'
+      @test_case_flow_new.flow_seq = @test_case_flow.flow_seq + 1
+
+      need_change_seq = TestCaseFlow.where("test_case_id = ? and flow_seq > ?",@test_case_flow.test_case_id,@test_case_flow.flow_seq)
+
+      need_change_seq.each do |n|
+        n.flow_seq = n.flow_seq + 1
+        n.save
+      end
+
+    end
+
+    @test_case_flow_new.save
     respond_to do |format|
       if @test_case_flow.update_attributes(params[:test_case_flow])
+          #不新增一行
+        if params[:commit] == "保存"
+          @test_case_flow_new= nil
+        end
         format.js { render :layout => false }
         format.html { redirect_to @test_case_flow, notice: 'Test case flow was successfully updated.' }
         format.json { head :no_content }
@@ -99,11 +129,12 @@ class TestCaseFlowsController < ApplicationController
   # DELETE /test_case_flows/1.json
   def destroy
     @test_case_flow = TestCaseFlow.find(params[:id])
+
+    @seq = @test_case_flow.flow_seq
     @test_case_flow.destroy
 
     respond_to do |format|
-      format.html { redirect_to test_case_flows_url }
-      format.json { head :no_content }
+      format.js { render :layout => false }
     end
   end
 end

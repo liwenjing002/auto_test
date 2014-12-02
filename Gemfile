@@ -4,7 +4,7 @@ gem 'rails', '3.2.18'
 gem 'thin'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem 'will_paginate',          '~> 3.0.1'
 gem 'mysql2', '0.3.11'
 
 gem 'net-ssh'
@@ -24,6 +24,7 @@ gem 'jquery-rails'
 
 gem "coderay"    
 gem "RedCloth"  
+gem "devise"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

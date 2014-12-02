@@ -1,1 +1,18 @@
+
+ <%if params[:commit] == '保存并插入'%>
+
+
+
+ $("input[name='test_case_flow[flow_seq]']").each(function(){
+	if(parseInt($(this).val())> <%=@test_case_flow.flow_seq%> ){
+		$(this).val(parseInt($(this).val())  + 1) 
+	}
+})
+
+$('#div_' + <%=@test_case_flow.flow_seq%>).after('<%= escape_javascript(render :partial => 'new_temply') %>');
+
+
+
+ <%else%>
  $('<%= escape_javascript(render :partial => 'new_temply') %>').appendTo($('#new_test_flow'));
+ <%end%>

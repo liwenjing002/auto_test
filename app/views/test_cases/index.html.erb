@@ -1,9 +1,40 @@
 <h1>测试用例管理</h1>
 
-<table>
+    <form action='/test_cases', method='get'>
+                  
+                   <div style="float:left">
+                    <div style="float:left">
+                      根据用户查找:
+              <select id="user_id" name="user_id">
+              <option value="">--请选择用户--</option>
+              <%User.all.collect {|p| [ p.email, p.id ]}.each do |k,v|%>
+               <option value="<%=v%>" <%= "selected" if params[:user_id] ==v.to_s %>><%=k%></option>
+              <%end%>
+             
+              </select>
+
+                    </div>
+                    <div style="float:left">
+                       根据标题查找:
+                     <input type="text" name = "title" value="<%=params[:title]%>">
+                     <input type="submit" class="btn btn-green big" value="提交">
+                    </div>
+                   </div>
+  </form>
+  <br>
+    <br>
+  <div style="float:left">
+                   <%= link_to '创建用例', new_test_case_path %>
+  </div>
+  <br>
+    <br>
+
+<table  border="1" >
   <tr>
     <th>标题</th>
     <th>所属用户</th>
+    <th></th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -12,16 +43,17 @@
 <% @test_cases.each do |test_case| %>
   <tr>
     <td><%= test_case.title %></td>
-    <td><%= test_case.user_id %></td>
+    <td><%if test_case.user %><%= test_case.user.email %><%end%></td>
     <td><%= link_to '查看用例', test_case %></td>
-    <td><%= link_to '编辑', edit_test_case_path(test_case) %></td>
+    
+    <td><%if "#{current_user.id}" == "#{test_case.user_id}"%><%= link_to '编辑', edit_test_case_path(test_case) %> <%end%></td>
     <td><%= link_to '生成脚本', pro_test_cases_path(test_case) %></td>
     <td><%= link_to '执行脚本', excuse_test_cases_path(test_case) %></td>
-    <td><%= link_to '删除用例', test_case, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+   <td> <%if "#{current_user.id}" == "#{test_case.user_id}"%><%= link_to '删除用例', test_case, method: :delete, data: { confirm: 'Are you sure?' } %><%end%></td>
   </tr>
 <% end %>
 </table>
-
+  <%= will_paginate @test_cases , :params =>{:title=> params[:title],:user_id=>params[:user_id]} %>
 <br />
 
-<%= link_to '创建用例', new_test_case_path %>
+
