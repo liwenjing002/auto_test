@@ -66,7 +66,7 @@ class TestCasesController < ApplicationController
     @test_case = TestCase.find(params[:id])
    
     respond_to do |format|
-      if @test_case.user_id == current_user.id && @test_case.update_attributes(params[:test_case])
+      if @test_case.update_attributes(params[:test_case])
         format.html { redirect_to @test_case, notice: 'Test case was successfully updated.' }
         format.json { head :no_content }
       else
