@@ -56,7 +56,7 @@
   </tr>
 <% end %>
 </table>
-
+ <%= will_paginate @test_plans , :params =>{:title=> params[:title],:user_id=>params[:user_id]} %>
 <br />
 
-<%= link_to '新建测试计划', new_test_plan_path %>
+
