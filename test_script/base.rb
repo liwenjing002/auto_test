@@ -1,4 +1,4 @@
-#encoding: utf-8
+﻿#encoding: utf-8
 
 require 'win32api'
 require 'dl'
@@ -131,7 +131,7 @@ def get_element(b,data,type)
 
   msg = '找不到元素,类型: '  + type 
   screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-  b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+  b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
   msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
   b.quit
@@ -342,7 +342,7 @@ def do_input(b,json,data)
       puts "找不到元素，输入结束-----------"
       msg = '找不到元素,类型: '  + type 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-      b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+      b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit
@@ -421,7 +421,7 @@ def do_click(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+    b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -468,7 +468,7 @@ def do_select(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+    b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -494,7 +494,7 @@ def do_assert(b,json,data)
      else
       msg = '对比失败,目前内容为: '  + t.text() 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-      b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+      b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit
@@ -506,7 +506,7 @@ def do_assert(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+    b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -537,7 +537,7 @@ def do_checkCode(b,json,data)
     else
       msg = '后台获取验证码失败' 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-      b.driver.save_screenshot "E:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
+      b.driver.save_screenshot "c:\/code\/auto_test\/public\/screan_shot\/" + screenshot_path
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit
