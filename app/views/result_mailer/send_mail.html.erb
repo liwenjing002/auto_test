@@ -13,7 +13,7 @@
   <tr>
     <td><%= test_result.test_plan.name %></td>
     <td><%= test_result.test_case.title %></td>
-    <td><%= if test_result.test_result_flag%> 通过 <%else%> 不通过<%end%></td>
+    <td><% if test_result.test_result_flag%> 通过 <%else%> 不通过<%end%></td>
     <td><%if test_result.test_result_content %><%= test_result.test_result_content.html_safe %><%end%></td>
     <td><%= link_to '查看脚本', script_test_plan_url(:id=>test_result.test_script_id) ,:target=>"_blank" %></td>
   </tr>
