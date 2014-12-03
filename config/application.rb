@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+﻿require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
@@ -63,7 +63,7 @@ module AutoTest
 
     config.action_mailer.raise_delivery_errors = true     #注意，在development.rb下需修改成true
     #添加如下几行代码
-    config.action_mailer.default_url_options = { :host => "localhost:3000" } #提示中有提到需要配置，即执行rails g devise:install
+    config.action_mailer.default_url_options = { :host => "10.20.5.164:3000" } #提示中有提到需要配置，即执行rails g devise:install
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
     :address => "smtp.126.com",  #smtp.qq.com

@@ -1,1 +1,1 @@
-system('thin start -c d:\cms\cms -p 3000 -e production') 
+system('thin start -c C:\code\auto_test 3000 ') 

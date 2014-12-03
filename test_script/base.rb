@@ -10,7 +10,7 @@ def user32(name, param_types, return_value)
 end
 
 $password_time = 0
-$file_path = "E:\/code\/auto_test\/public\/screan_shot\/"
+$file_path = "c:\/code\/auto_test\/public\/screan_shot\/"
 
 $key_map = {  
 '1' => 201,  

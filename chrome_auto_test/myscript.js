@@ -1,8 +1,14 @@
 $(document).mousedown(function(e){ 
 if(e.which ==3){
 		
-		var conditionText = $(e.target).attr("type");
+		var conditionText = "";
 
+		if($(e.target).attr("type")){
+			conditionText = $(e.target).attr("type")
+		}else{
+		conditionText = e.target.localName
+		}
+		
 		if($(e.target).attr("id")){
 			conditionText = conditionText + "[id=\'"+ $(e.target).attr("id") +"\']"
 		}
