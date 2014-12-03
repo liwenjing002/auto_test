@@ -131,7 +131,11 @@ def get_element(b,data,type)
 
   msg = '找不到元素,类型: '  + type 
   screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-  b.driver.save_screenshot $file_path + screenshot_path
+  begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
 
   msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
   b.quit
@@ -184,16 +188,38 @@ end
 def do_input(b,json,data)
   puts "华丽的分割线-----------------------------------------------------------------------"
   puts "开始处理输入------------------"
+  old_json = json.clone
   if (json[:type] !=nil ) 
     type = json[:type]
     json.delete(:type)
-    t = get_element(b,json,type)
-    if(t.exists?)
       if type != 'embed' && type != 'object'
-        t.focus
-        t.click
-        t.set data
-        t.send_keys([:tab])
+         t = get_element(b,json,type)
+         if(t.exists?)
+            t.focus
+            t.click
+            begin
+            t.set data
+            rescue Exception => e 
+              b.quit
+              raise "类型为：" + type + "," + old_json.to_s+ "该控件无法输入"
+            end
+            t.send_keys([:tab])
+         else
+          puts "找不到元素，输入结束-----------"
+          msg = '找不到元素,类型: '  + type 
+          screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+          
+
+          begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
+
+          msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+          b.quit
+          raise msg
+        end
 
       else
      
@@ -338,16 +364,7 @@ def do_input(b,json,data)
         
       end
       puts "输入成功------------------"
-    else
-      puts "找不到元素，输入结束-----------"
-      msg = '找不到元素,类型: '  + type 
-      screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-      b.driver.save_screenshot $file_path + screenshot_path
-
-      msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
-      b.quit
-      raise msg
-    end
+   
   end
   
   puts "华丽的分割线-----------------------------------------------------------------------"
@@ -404,6 +421,9 @@ def do_click(b,json,data)
   puts "开始处理点击------------------"
   type = json[:type]
   json.delete(:type)
+
+  old_json = json.clone
+
   if type== 'input'
     puts "input类型点击判断类型为按钮，处理按钮------------------"
     t = get_element(b,json,'button')
@@ -412,7 +432,12 @@ def do_click(b,json,data)
   end
   if t.exists?
     sleep 1
+    begin
     t.click
+    rescue Exception => e 
+      b.quit
+     raise  raise "类型为：" + type + "," + old_json.to_s + "该控件无法点击"
+    end
     sleep 1
     puts "点击成功------------------"
     return b
@@ -421,7 +446,11 @@ def do_click(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot $file_path + screenshot_path
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -468,7 +497,11 @@ def do_select(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot $file_path + screenshot_path
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -494,7 +527,11 @@ def do_assert(b,json,data)
      else
       msg = '对比失败,目前内容为: '  + t.text() 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-      b.driver.save_screenshot $file_path + screenshot_path
+      begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit
@@ -506,7 +543,11 @@ def do_assert(b,json,data)
 
     msg = '找不到元素,类型: '  + type 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-    b.driver.save_screenshot $file_path + screenshot_path
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
 
     msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
     b.quit
@@ -537,7 +578,11 @@ def do_checkCode(b,json,data)
     else
       msg = '后台获取验证码失败' 
       screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
-      b.driver.save_screenshot $file_path + screenshot_path
+      begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+          end
 
       msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
       b.quit

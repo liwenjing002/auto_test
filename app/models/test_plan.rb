@@ -49,7 +49,7 @@ class TestPlan < ActiveRecord::Base
    	end
 
     def get_error_cast_num
-     return  TestResult.where("test_plan_id = ?",id).length
+     return  TestResult.where("test_plan_id = ? and test_result_flag = ? ",id,false).length
     end
 
 end
