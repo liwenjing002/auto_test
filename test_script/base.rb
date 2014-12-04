@@ -306,18 +306,11 @@ def do_input(b,json,data)
 
 
         #输入控件后需要将鼠标移开
-        get_window_rect = user32 'GetWindowRect' , ['L' , 'P' ], 'I'
-        rectangle = [0, 0, 0, 0].pack 'L*'
-        get_window_rect.call dialog, rectangle
-        left, top, right, bottom = rectangle.unpack 'L*'
-
-        puts "窗体坐标：" + left.to_s + right.to_s
-
         set_cursor_pos = user32 'SetCursorPos' , ['L' , 'L' ], 'I'
         mouse_event = user32 'mouse_event' , ['L' , 'L' , 'L' , 'L' , 'L' ], 'V'
         left_down = 0x0002
         left_up = 0x0004
-        center = [(left + right) / 2 + 10, (top + bottom) / 2 + 10 ]
+        center = [(left + right) / 2, (top + bottom) / 2 + 10]
         set_cursor_pos.call *center
         mouse_event.call left_down, 0, 0, 0, 0
         mouse_event.call left_up, 0, 0, 0, 0
