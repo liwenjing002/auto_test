@@ -310,7 +310,7 @@ def do_input(b,json,data)
         mouse_event = user32 'mouse_event' , ['L' , 'L' , 'L' , 'L' , 'L' ], 'V'
         left_down = 0x0002
         left_up = 0x0004
-        center = [(left + right) / 2, (top + bottom) / 2 + 10]
+        center = [((left + right) / 2 + 200), (top + bottom) / 2 ]
         set_cursor_pos.call *center
         mouse_event.call left_down, 0, 0, 0, 0
         mouse_event.call left_up, 0, 0, 0, 0
