@@ -326,6 +326,9 @@ def do_input(b,json,data)
 
          
         if json[:id] == 'userpasswdNP' or json[:id] == 'userpasswdNP1'
+
+        t = get_element(b,json,type)  
+
         puts '先锋支付控件额外处理'
         test_script ='var userpasswd = GetActiveX();$(\'#userpasswdNP\').attr(\'test_length\',userpasswd.GetLength())'
         b.execute_script(test_script)
