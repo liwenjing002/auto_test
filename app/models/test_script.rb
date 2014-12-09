@@ -52,20 +52,56 @@ class TestScript < ActiveRecord::Base
     for i in index..(test_case_flows.length - 1)
 
         test_plan_datas = TestPlanData.where("test_case_flow_id = ? and test_plan_id = ?",test_case_flows[i].id,test_plan.id).first
+        test_datas= []
 
         if test_plan_datas !=nil
-          test_datas =test_plan_datas.test_data.split("\|")
 
-          test_datas.each do |d|
-            ranges = d.split("\-")
-              if ranges.length > 1
-                 test_datas.delete(d)
-                for m in (ranges[0].to_i)..(ranges[1].to_i)
-                  test_datas.push m.to_s
+
+          #是枚举数
+          if test_case_flows[i].flow_date_type.code == "enum_num"
+              reg = Regexp.new(".*\{(.*)\}.*")
+              res =  reg.match(test_plan_datas.test_data)
+              if res != nil and res.length ==2
+                res[1].split("\|").each do |b|
+                  temp = test_plan_datas.test_data
+                  temp = temp.sub(/\{.*\}/, b)
+                  test_datas.push temp
                 end
               end
-              
-            end
+
+          end
+
+
+          #是区间数
+          if test_case_flows[i].flow_date_type.code == "rang"
+                p "done rang ---------------------------------------------------------------------------------------------------"
+                reg = Regexp.new(".*\{(.*)\}.*")
+                res =  reg.match(test_plan_datas.test_data)
+
+                p "res length is " + res.length.to_s
+                p res.length == 2
+                if res  and res.length == 2
+                  puts "reg tesult is : " + res[1]
+                  ranges = res[1].split("\-")
+                  if ranges.length > 1
+                    for m in (ranges[0].to_i)..(ranges[1].to_i)
+                      temp = test_plan_datas.test_data
+                      temp = temp.sub(/\{.*\}/, m.to_s)
+                      p "prams : " + temp 
+                      test_datas.push temp
+                    end
+                  end
+              end
+          end
+
+          #普通数
+          if test_case_flows[i].flow_date_type.code == "text"
+               test_datas = [test_plan_datas.test_data]
+          end
+
+         
+
+         
           
 
         else

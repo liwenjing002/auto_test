@@ -50,7 +50,7 @@ $key_map = {
 'y' => 306,
 'z' => 501
 }
-
+$temp_copy = ""
 
 
 
@@ -518,7 +518,8 @@ def do_assert(b,json,data)
   t = get_element(b,json,type)
 
   if t!=nil and t.exists?
-     if  t.text() ==data
+    reg = Regexp.new(".*" + data + ".*")
+     if reg.match(t.text())
        puts "对比成功，进入下一步------------------"
      else
       msg = '对比失败,目前内容为: '  + t.text() 
@@ -550,6 +551,50 @@ def do_assert(b,json,data)
     raise msg
   end
 end
+
+
+
+def do_copy(b,json,data)
+
+  puts "华丽的分割线-----------------------------------------------------------------------"
+  puts "开始处理copy------------------"
+  type = json[:type]
+  json.delete(:type)
+  text = json[:text]
+  json.delete(:text)
+  t = get_element(b,json,type)
+  if t!=nil and t.exists?
+      puts "复制内容为：" + t.text() + "---------------------------------------------------"
+     $temp_copy = t.text()
+      puts "复制成功，进入下一步----------------------------------------------------------"
+    return b
+  else
+    puts "找不到元素，点击结束-------------------------------------------------------------"
+
+    msg = '找不到元素,类型: '  + type 
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+     end
+
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    b.quit
+    raise msg
+  end
+end
+
+
+
+def do_paste(b,json,data)
+    puts "华丽的分割线-----------------------------------------------------------------------"
+    puts "开始处理黏贴------------------"
+    #处理输入
+    puts "黏贴板里面内容为：" +  $temp_copy  + "---------------------------------------------"
+    do_input(b,json,$temp_copy)
+end
+
 
 
 def do_checkCode(b,json,data)

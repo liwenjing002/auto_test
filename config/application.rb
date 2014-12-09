@@ -59,7 +59,7 @@ module AutoTest
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-
+	config.logger = Logger.new(STDOUT)  
 
     config.action_mailer.raise_delivery_errors = true     #注意，在development.rb下需修改成true
     #添加如下几行代码
