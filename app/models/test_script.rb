@@ -58,30 +58,21 @@ class TestScript < ActiveRecord::Base
 
 
           #是枚举数
-          if test_case_flows[i].flow_date_type.code == "enum_num"
+        
               reg = Regexp.new(".*\{(.*)\}.*")
               res =  reg.match(test_plan_datas.test_data)
+
               if res != nil and res.length ==2
-                res[1].split("\|").each do |b|
-                  temp = test_plan_datas.test_data
-                  temp = temp.sub(/\{.*\}/, b)
-                  test_datas.push temp
-                end
-              end
 
-          end
+                if res[1].split("\|").length > 1
 
+                  res[1].split("\|").each do |b|
+                    temp = test_plan_datas.test_data
+                    temp = temp.sub(/\{.*\}/, b)
+                    test_datas.push temp
+                  end
+                else
 
-          #是区间数
-          if test_case_flows[i].flow_date_type.code == "rang"
-                p "done rang ---------------------------------------------------------------------------------------------------"
-                reg = Regexp.new(".*\{(.*)\}.*")
-                res =  reg.match(test_plan_datas.test_data)
-
-                p "res length is " + res.length.to_s
-                p res.length == 2
-                if res  and res.length == 2
-                  puts "reg tesult is : " + res[1]
                   ranges = res[1].split("\-")
                   if ranges.length > 1
                     for m in (ranges[0].to_i)..(ranges[1].to_i)
@@ -91,18 +82,12 @@ class TestScript < ActiveRecord::Base
                       test_datas.push temp
                     end
                   end
+
+                end
+              else
+                #普通数
+                 test_datas = [test_plan_datas.test_data]
               end
-          end
-
-          #普通数
-          if test_case_flows[i].flow_date_type.code == "text"
-               test_datas = [test_plan_datas.test_data]
-          end
-
-         
-
-         
-          
 
         else
           test_datas= ['']
