@@ -62,8 +62,8 @@ class TestScript < ActiveRecord::Base
               reg = Regexp.new(".*\{(.*)\}.*")
               res =  reg.match(test_plan_datas.test_data)
 
-              if res != nil and res.length ==2
-
+              if res != nil and res.length ==2 and test_case_flows[i].flow_type.code != 'checkCode'
+                 p "1111111111111111------------"
                 if res[1].split("\|").length > 1
                   test_datas= []
                   res[1].split("\|").each do |b|
