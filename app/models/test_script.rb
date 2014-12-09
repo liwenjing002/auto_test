@@ -52,7 +52,7 @@ class TestScript < ActiveRecord::Base
     for i in index..(test_case_flows.length - 1)
 
         test_plan_datas = TestPlanData.where("test_case_flow_id = ? and test_plan_id = ?",test_case_flows[i].id,test_plan.id).first
-        test_datas= []
+        test_datas= ['']
 
         if test_plan_datas !=nil
 
@@ -65,7 +65,7 @@ class TestScript < ActiveRecord::Base
               if res != nil and res.length ==2
 
                 if res[1].split("\|").length > 1
-
+                  test_datas= []
                   res[1].split("\|").each do |b|
                     temp = test_plan_datas.test_data
                     temp = temp.sub(/\{.*\}/, b)
