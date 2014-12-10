@@ -85,6 +85,7 @@ class TestPlansController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to test_plans_url }
+       format.js { render :layout => false }
       format.json { head :no_content }
     end
   end
@@ -100,6 +101,7 @@ class TestPlansController < ApplicationController
     
      respond_to do |format|
       format.html { redirect_to test_plans_url }
+       format.js { render :layout => false }
       format.json { head :no_content }
     end
   end
@@ -116,6 +118,7 @@ class TestPlansController < ApplicationController
 
       respond_to do |format|
       format.html { redirect_to test_plans_url }
+       format.js { render :layout => false }
       format.json { head :no_content }
     end
 

@@ -47,9 +47,9 @@
     <td><%= link_to '查看用例', test_case %></td>
     
     <td><%if "#{current_user.id}" == "#{test_case.user_id}"%><%= link_to '编辑', edit_test_case_path(test_case) %> <%end%></td>
-    <td><%= link_to '生成脚本', pro_test_cases_path(test_case) %></td>
-    <td><%= link_to '执行脚本', excuse_test_cases_path(test_case) %></td>
-   <td> <%if "#{current_user.id}" == "#{test_case.user_id}"%><%= link_to '删除用例', test_case, method: :delete, data: { confirm: 'Are you sure?' } %><%end%></td>
+    <td><%= link_to '生成脚本', pro_test_cases_path(test_case) ,:remote => true%></td>
+    <td><%= link_to '执行脚本', excuse_test_cases_path(test_case) ,:remote => true%></td>
+   <td> <%if "#{current_user.id}" == "#{test_case.user_id}"%><%= link_to '删除用例', test_case, method: :delete, data: { confirm: 'Are you sure?' },:remote => true %><%end%></td>
   </tr>
 <% end %>
 </table>
