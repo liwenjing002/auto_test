@@ -84,6 +84,7 @@
     @test_case.destroy
     respond_to do |format|
       format.html { redirect_to test_cases_url }
+      format.js { render :layout => false }
       format.json { head :no_content }
     end
   end
@@ -102,6 +103,7 @@
 
       respond_to do |format|
       format.html { redirect_to test_cases_url }
+      format.js { render :layout => false }
       format.json { head :no_content }
     end
 
