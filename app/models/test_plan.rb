@@ -1,6 +1,6 @@
 require 'fileutils'
 class TestPlan < ActiveRecord::Base
-	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id
+	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo
 
 
    	has_many :test_plan_cases, :dependent => :destroy
