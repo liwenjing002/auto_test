@@ -59,7 +59,7 @@ class TestScript < ActiveRecord::Base
 
           #是枚举数
         
-              reg = Regexp.new(".*\{(.*)\}.*")
+              reg = Regexp.new(".*#(.*)#.*")
               res =  reg.match(test_plan_datas.test_data)
 
               if res != nil and res.length ==2 and test_case_flows[i].flow_type.code != 'checkCode'
