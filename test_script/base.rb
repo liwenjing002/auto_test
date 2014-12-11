@@ -10,7 +10,7 @@ def user32(name, param_types, return_value)
 end
 
 $password_time = 0
-$file_path = "c:\/code\/auto_test\/public\/screan_shot\/"
+$file_path = "e:\/code\/auto_test\/public\/screan_shot\/"
 
 $key_map = {  
 '1' => 201,  
@@ -517,9 +517,22 @@ def do_assert(b,json,data)
   json.delete(:text)
   t = get_element(b,json,type)
 
+  dates = data.split("|")
+
   if t!=nil and t.exists?
-    reg = Regexp.new(".*" + data + ".*")
-     if reg.match(t.text())
+
+    result = false
+
+    dates.each do |d|
+      reg = Regexp.new(".*" + d + ".*")
+      if reg.match(t.text())
+        result = true
+      end
+    end
+
+
+    
+     if result
        puts "对比成功，进入下一步------------------"
      else
       msg = '对比失败,目前内容为: '  + t.text() 
