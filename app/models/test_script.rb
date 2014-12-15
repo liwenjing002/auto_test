@@ -58,17 +58,17 @@ class TestScript < ActiveRecord::Base
 
 
           #是枚举数
-        
-              reg = Regexp.new(".*#(.*)#.*")
+              if test_plan_datas.flow_date_type.code=='region' or  test_plan_datas.flow_date_type.code=='enum'
+              reg = Regexp.new(".*\#(.*)\#.*")
               res =  reg.match(test_plan_datas.test_data)
 
               if res != nil and res.length ==2 and test_case_flows[i].flow_type.code != 'checkCode'
-                 p "1111111111111111------------"
+             
                 if res[1].split("\|").length > 1
                   test_datas= []
                   res[1].split("\|").each do |b|
                     temp = test_plan_datas.test_data
-                    temp = temp.sub(/\{.*\}/, b)
+                    temp = temp.sub(/\#.*\#/, b)
                     test_datas.push temp
                   end
                 else
@@ -84,10 +84,12 @@ class TestScript < ActiveRecord::Base
                   end
 
                 end
-              else
-                #普通数
-                 test_datas = [test_plan_datas.test_data]
               end
+
+            else
+              #普通数
+                 test_datas = [test_plan_datas.test_data]
+            end
 
         else
           test_datas= ['']
@@ -95,6 +97,12 @@ class TestScript < ActiveRecord::Base
 
         p '--------------------------------------------------------'
         p test_datas
+
+
+        #截图特殊处理
+       if test_case_flows[i].flow_type.code == 'pic'
+        test_case_flows[i].flow_location = "{:test_script_id=>0,:test_plan_id=>#{test_plan.id},:test_case_id=>#{test_case.id},:test_result_flag => true}"
+       end
 
 
         script_content_old = testScript.script_content

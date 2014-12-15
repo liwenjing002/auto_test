@@ -19,7 +19,27 @@
     <td><%= test_case_flow.flow_seq %></td>
     <td><%= test_case_flow.flow_type.name %></td>
     <td><%= test_case_flow.flow_location %></td>
-    <td><%= test_case_flow.flow_date_type.name %></td>
+    <td>
+      <select id="test_case_flow_flow_date_type_id_<%=test_case_flow.id%>" >
+          <%FlowDateType.find(:all).each do |t|%>
+           <option value="<%=t.id%>" 
+
+             <%if  test_case_flow.get_test_data_by_plan(params[:test_plan_id])!=nil %>
+
+              <%if t.id.to_s ==test_case_flow.get_test_data_by_plan(params[:test_plan_id]).flow_date_type_id.to_s %>
+            selected="selected"
+            <%end%>
+
+             <%else%>
+              <%if t.id == test_case_flow.flow_date_type_id %>
+            selected="selected"
+            <%end%>
+             <%end%>
+           
+
+            ><%=t.name%></option>
+          <%end%>
+      </select>
     <td>
 
       <%if test_case_flow.flow_date!='' and test_case_flow.get_test_data_by_plan(params[:test_plan_id])==nil %>
@@ -45,7 +65,7 @@ $(".test_data_class").each(function(){
   $.ajax({
              type: "POST",
              url: "/test_plan_case/set_data",
-             data: {"test_plan_data[test_plan_id]":"<%=params[:test_plan_id]%>","test_plan_data[test_case_flow_id]": $(this).attr("test_flow_id"),"test_plan_data[test_data]": $(this).val()},
+             data: {"test_plan_data[test_plan_id]":"<%=params[:test_plan_id]%>","test_plan_data[test_case_flow_id]": $(this).attr("test_flow_id"),"test_plan_data[test_data]": $(this).val(),"test_plan_data[flow_date_type_id]":$("#test_case_flow_flow_date_type_id_" + $(this).attr("test_flow_id")).val()},
              dataType: "json",
              success: function(data){
                 

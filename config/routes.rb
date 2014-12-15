@@ -31,6 +31,15 @@ AutoTest::Application.routes.draw do
 
   get '/test_plans/:id/excuse' => "test_plans#excuse", :as => "excuse_test_plan"
 
+  get '/test_plans/:id/pause' => "test_plans#pause", :as => "pause_test_plan"
+
+  get '/test_plans/:id/stop' => "test_plans#stop", :as => "stop_test_plan"
+
+  get '/test_plans/:id/resume' => "test_plans#resume", :as => "resume_test_plan"
+
+
+
+
   get '/test_plans/:id/result' => "test_plans#result", :as => "result_test_plan"
 
 

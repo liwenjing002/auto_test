@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 require 'win32api'
+require 'oci8'
 require 'dl'
 require 'net/http'
 require 'net/https'
@@ -183,11 +184,34 @@ def do_url(b,url)
 end
 
 
+#生成随机数
+def newpass(len)
+  newpass = ""
+  1.upto(len){ |i| newpass << rand(10).to_s}
+  return newpass
+end
+
 
 #处理输入
 def do_input(b,json,data)
   puts "华丽的分割线-----------------------------------------------------------------------"
   puts "开始处理输入------------------"
+
+
+   reg = Regexp.new(".*\\[(.*)\\].*")
+   res =  reg.match(data)
+   
+   if res != nil and res.length ==2
+      puts "数据类型为随机数类型，特殊处理---------------------------------------------------"
+      rang_num = res[1]
+      rang_res = newpass rang_num.to_i
+      data = data.sub(/\[.*\]/, rang_res)
+      puts "最终生成的随机数为：" + data + "-----------------------------------------------------"
+
+   end
+
+   
+
   old_json = json.clone
   if (json[:type] !=nil ) 
     type = json[:type]
@@ -605,8 +629,52 @@ def do_paste(b,json,data)
     puts "开始处理黏贴------------------"
     #处理输入
     puts "黏贴板里面内容为：" +  $temp_copy  + "---------------------------------------------"
-    do_input(b,json,$temp_copy)
+   b =  do_input(b,json,$temp_copy)
+   return b
 end
+
+
+def do_pic(b,json,data)
+    puts "华丽的分割线-----------------------------------------------------------------------"
+    puts "开始处理截图------------------"
+
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+     end
+
+    msg = "页面截图成功："
+    
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    
+    json[:test_result_content] = msg
+    json[:test_result_flag] = true
+    TestResult.setResult(json);
+    return b
+end
+
+
+
+def do_pic(b,json)
+    puts "华丽的分割线-----------------------------------------------------------------------"
+    puts "开始处理截图------------------"
+
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+     end
+
+    msg = "页面截图成功："
+    
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+
+    return b
+end
+
 
 
 
@@ -681,6 +749,55 @@ def CheckCode_ok(gifurl,checkCode)
   return checkCode
 end
 
+
+
+
+#执行数据库比对
+def do_db(b,json,data)
+  #customer/customer@10.20.5.201:1521/xfdb
+  conn = OCI8.new(json[:name], json[:password],json[:url])
+  a =[]
+#执行查询操作
+ cursor = conn.exec(json[:sql]) { |r| a<<r; puts r.join('')}
+ 
+ if a.length == 0
+
+      msg = '数据库对比失败,没有返回任何记录'
+      msg  = msg + a.to_s
+      b.quit
+      raise msg
+ end
+
+ if a.length > 1
+      msg = '数据库对比失败,返回多条记录'
+      msg  = msg + a.to_s
+      b.quit
+      raise msg
+ end
+
+
+
+  dates = data.split("|")
+
+  result = false
+
+  dates.each do |d|
+      reg = Regexp.new(".*" + d + ".*")
+      if reg.match(a[0][0])
+        result = true
+      end
+  end
+
+
+  if result
+         puts "对比成功，进入下一步------------------"
+  else
+        msg = '对比失败,目前内容为: '  + a[0]
+        b.quit
+        raise msg
+  end
+
+end
 
 
 

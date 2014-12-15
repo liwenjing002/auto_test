@@ -2,6 +2,8 @@ source 'https://ruby.taobao.org'
 gem 'watir-webdriver' 
 gem 'rails', '3.2.18'
 gem 'thin'
+gem 'rufus-scheduler'
+gem 'ruby-oci8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'will_paginate',          '~> 3.0.1'

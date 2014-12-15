@@ -78,3 +78,5 @@ module AutoTest
 
   end
 end
+
+$scheduler = Rufus::Scheduler.new

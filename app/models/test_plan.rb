@@ -1,6 +1,7 @@
+# encoding: utf-8
 require 'fileutils'
 class TestPlan < ActiveRecord::Base
-	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo
+	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo,:time_after,:time_every,:time_at,:time_cron,:job_id,:job_sstatus
 
 
    	has_many :test_plan_cases, :dependent => :destroy
@@ -29,12 +30,10 @@ class TestPlan < ActiveRecord::Base
         control_file.write "begin \r\n"
   			control_file.write "load \'" + name + "\'\r\n"
 
-        control_file.write "testResult = TestResult.new(:test_script_id=>" + test_script.id.to_s + ",:test_plan_id=>" + test_script.test_plan_id.to_s + ",:test_case_id=>" + test_script.test_case_id.to_s  + ",:test_result_flag => true) \r\n"
-        control_file.write "testResult.save \r\n"
+        control_file.write "testResult = TestResult.setResult(:test_script_id=>" + test_script.id.to_s + ",:test_plan_id=>" + test_script.test_plan_id.to_s + ",:test_case_id=>" + test_script.test_case_id.to_s  + ",:test_result_flag => true) \r\n"
 
         control_file.write "rescue Exception => e \r\n"
-        control_file.write "testResult = TestResult.new(:test_script_id=>" + test_script.id.to_s + ",:test_plan_id=>" + test_script.test_plan_id.to_s + ",:test_case_id=>" + test_script.test_case_id.to_s  + ",:test_result_content=>e.message,:test_result_flag => false) \r\n"
-        control_file.write "testResult.save \r\n"
+        control_file.write "testResult = TestResult.setResult(:test_script_id=>" + test_script.id.to_s + ",:test_plan_id=>" + test_script.test_plan_id.to_s + ",:test_case_id=>" + test_script.test_case_id.to_s  + ",:test_result_content=>e.message,:test_result_flag => false) \r\n"
         control_file.write "end \r\n"
 
    			scriptFile.close
@@ -50,6 +49,36 @@ class TestPlan < ActiveRecord::Base
 
     def get_error_cast_num
      return  TestResult.where("test_plan_id = ? and test_result_flag = ? ",id,false).length
+    end
+
+
+
+    def get_job_status
+     
+      job = $scheduler.job(self.job_id)
+
+      if job !=nil
+        if job.paused?
+          if self.job_status !='暂停中'
+            self.job_status = '暂停中'
+            self.save
+          end
+          return "暂停中"
+        else
+           if self.job_status !='运行中'
+            self.job_status = '运行中'
+            self.save
+          end
+           return "运行中"
+        end
+      else
+        if self.job_status !='停止'
+            self.job_status = '停止'
+            self.save
+          end
+        return "停止"  
+      end
+
     end
 
 end

@@ -16,6 +16,29 @@
     <%= f.text_field :name %>
   </div>
   <div class="field">
+    <%= f.label :几秒后执行 %><br />
+    <%= f.number_field :time_after %>
+  </div>
+
+
+  <div class="field">
+    <%= f.label :每隔几分钟执行 %><br />
+    <%= f.number_field :time_every %>
+  </div>
+
+
+   <div class="field">
+    <%= f.label :在什么时候执行%><br />
+    <%= f.text_field :time_at %>
+   </div>
+
+      <div class="field">
+    <%= f.label :cron—时间定义%><br />
+    <%= f.text_field :time_cron %>
+   </div>
+
+
+  <div class="field">
     <%= f.label :服务器ip（用于获取短信和密码，可不填） %><br />
     <%= f.text_field :host %>
   </div>

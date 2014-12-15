@@ -33,6 +33,10 @@
     <th>所属人</th>
     <th>用例数(测试用例数X数据)</th>
     <th>最近一次执行脚本的错误用例数</th>
+     <th>计划状态</th>
+    <th></th>
+    <th></th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -47,10 +51,38 @@
     <td><%if test_plan.user %><%= test_plan.user.email %><%end%></td>
     <td><%= test_plan.test_num %></td>
     <td><%= test_plan.get_error_cast_num %></td>
+     <td><%= test_plan.get_job_status() %></td>
     <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '查看', test_plan %><%end%></td>
     <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '编辑', edit_test_plan_path(test_plan) %><%end%></td>
     <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '生成所有脚本', pro_test_plan_path(test_plan) ,:remote => true%><%end%></td>
-    <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '开始运行', excuse_test_plan_path(test_plan) ,:remote => true%><%end%></td>
+    <td>
+        <%if test_plan.get_job_status()  == "停止"%>
+            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+        <%= link_to '启动', excuse_test_plan_path(test_plan) ,:remote => true%>
+           <%end%>
+        <%end%>
+    </td>
+     <td>
+        <%if test_plan.get_job_status()  == "运行中" || test_plan.get_job_status()  == "暂停中"%>
+            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+        <%= link_to '停止', stop_test_plan_path(test_plan) ,:remote => true%>
+           <%end%>
+        <%end%>
+    </td>
+     <td>
+        <%if test_plan.get_job_status()  == "运行中"%>
+            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+        <%= link_to '暂停', pause_test_plan_path(test_plan) ,:remote => true%>
+           <%end%>
+        <%end%>
+    </td>
+     <td>
+        <%if test_plan.get_job_status()  == "暂停中"%>
+            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+        <%= link_to '恢复', resume_test_plan_path(test_plan) ,:remote => true%>
+           <%end%>
+        <%end%>
+    </td>
     <td><%= link_to '查看最近一次运行结果', result_test_plan_path(test_plan),:target=>"_blank" %></td>
     <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '删除', test_plan, method: :delete, data: { confirm: 'Are you sure?' } ,:remote => true%><%end%></td>
   </tr>

@@ -95,9 +95,18 @@ class TestPlansController < ApplicationController
 
      TestResult.delete_all("test_plan_id = #{@test_plan.id}")
 
-      Thread.new  do  
-          @test_plan.excuse
-       end  
+     Thread.new  do  
+     
+
+     job_id = $scheduler.every '20s' do
+        @test_plan.excuse
+      end 
+      puts job_id
+      @test_plan.job_id =  job_id
+      @test_plan.job_status = '运行中'
+      @test_plan.save
+      $scheduler.join
+      end
     
      respond_to do |format|
       format.html { redirect_to test_plans_url }
@@ -105,6 +114,63 @@ class TestPlansController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+
+  def pause
+    @test_plan = TestPlan.find(params[:id])
+
+
+
+    job = $scheduler.job(@test_plan.job_id)
+    if job !=nil
+    puts job 
+    puts "-======================================================================================================================" 
+    puts job.paused? 
+    job.pause
+     puts job.paused? 
+     puts "-======================================================================================================================" 
+    end
+     respond_to do |format|
+      format.html { redirect_to test_plans_url }
+       format.js { render :layout => false }
+      format.json { head :no_content }
+    end
+  end
+
+
+def resume
+    @test_plan = TestPlan.find(params[:id])
+
+    if job !=nil
+    job = $scheduler.job(@test_plan.job_id)
+    puts job 
+    job.resume
+    end
+    
+     respond_to do |format|
+      format.html { redirect_to test_plans_url }
+       format.js { render :layout => false }
+      format.json { head :no_content }
+    end
+  end
+
+
+  def stop
+    @test_plan = TestPlan.find(params[:id])
+
+    if job !=nil
+     $scheduler.unschedule(@test_plan.job_id)
+   end
+    
+     respond_to do |format|
+      format.html { redirect_to test_plans_url }
+       format.js { render :layout => false }
+      format.json { head :no_content }
+    end
+  end
+
+
 
 
   def pro
