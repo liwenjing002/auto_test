@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141215065448) do
+ActiveRecord::Schema.define(:version => 20141215093540) do
 
   create_table "flow_date_types", :force => true do |t|
     t.string   "code"
@@ -75,8 +75,10 @@ ActiveRecord::Schema.define(:version => 20141215065448) do
     t.text     "memo"
     t.string   "time_after"
     t.string   "time_every"
-    t.string   "time_at"
     t.string   "time_cron"
+    t.string   "time_at"
+    t.string   "job_id"
+    t.string   "job_status"
   end
 
   create_table "test_results", :force => true do |t|
@@ -117,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20141215065448) do
     t.datetime "locked_at"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "role"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

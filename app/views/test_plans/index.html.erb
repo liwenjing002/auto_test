@@ -54,7 +54,7 @@
      <td><%= test_plan.get_job_status() %></td>
     <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '查看', test_plan %><%end%></td>
     <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '编辑', edit_test_plan_path(test_plan) %><%end%></td>
-    <td><%if "#{current_user.id }"== "#{test_plan.user_id}"%><%= link_to '生成所有脚本', pro_test_plan_path(test_plan) ,:remote => true%><%end%></td>
+    <td><% if can? :done, test_plan %>  <%= link_to '生成所有脚本', pro_test_plan_path(test_plan) ,:remote => true%><%end%></td>
     <td>
         <%if test_plan.get_job_status()  == "停止"%>
             <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
