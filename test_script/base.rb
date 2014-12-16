@@ -797,6 +797,8 @@ def do_db(b,json,data)
         raise msg
   end
 
+  return b
+
 end
 
 
