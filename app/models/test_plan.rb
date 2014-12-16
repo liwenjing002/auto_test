@@ -87,12 +87,15 @@ class TestPlan < ActiveRecord::Base
       end
 
       if job.scheduled?
+
+          if time_select == 4 or time_select == 1 or time_select == 2
            if job.paused?
             if self.job_status !='暂停中'
               self.job_status = '暂停中'
               self.save
             end
           return "暂停中"
+          end
           end
 
           if self.job_status !='运行中'
@@ -101,15 +104,7 @@ class TestPlan < ActiveRecord::Base
           end
           return "运行中"
       end
-
-
-      if job.paused?
-            if self.job_status !='暂停中'
-              self.job_status = '暂停中'
-              self.save
-            end
-          return "暂停中"
-      end
+    
     end
 
 end

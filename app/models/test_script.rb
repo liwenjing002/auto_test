@@ -159,6 +159,10 @@ class TestScript < ActiveRecord::Base
 
   		test_case.test_case_flows.each do |test_flow|
 
+        if test_flow.flow_type.code == 'pic'
+        test_flow.flow_type.code = 'pic_test'
+       end
+
 
         self.script_content = self.script_content + 'b = do_' + test_flow.flow_type.code + 
         ' b,' + (test_flow.flow_location=='' ? '' : test_flow.flow_location  + ',')  + 

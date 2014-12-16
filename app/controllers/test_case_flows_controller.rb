@@ -1,7 +1,6 @@
 # encoding: utf-8
 class TestCaseFlowsController < ApplicationController
-  check_authorization
-  load_and_authorize_resource
+
 
   # GET /test_case_flows
   # GET /test_case_flows.json
