@@ -1,7 +1,6 @@
 # encoding: utf-8
 class TestPlansController < ApplicationController
-  check_authorization
-  load_and_authorize_resource
+
   # GET /test_plans
   # GET /test_plans.json
   def index

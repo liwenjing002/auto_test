@@ -58,7 +58,7 @@ class TestScript < ActiveRecord::Base
 
 
           #是枚举数
-              if test_plan_datas.flow_date_type.code=='region' or  test_plan_datas.flow_date_type.code=='enum'
+              if test_plan_datas.flow_date_type = nil and (test_plan_datas.flow_date_type.code=='region' or  test_plan_datas.flow_date_type.code=='enum')
               reg = Regexp.new(".*\#(.*)\#.*")
               res =  reg.match(test_plan_datas.test_data)
 
@@ -77,7 +77,7 @@ class TestScript < ActiveRecord::Base
                   if ranges.length > 1
                     for m in (ranges[0].to_i)..(ranges[1].to_i)
                       temp = test_plan_datas.test_data
-                      temp = temp.sub(/\{.*\}/, m.to_s)
+                      temp = temp.sub(/\#.*\#/, m.to_s)
                       p "prams : " + temp 
                       test_datas.push temp
                     end
