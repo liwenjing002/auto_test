@@ -52,13 +52,13 @@ class TestScript < ActiveRecord::Base
     for i in index..(test_case_flows.length - 1)
 
         test_plan_datas = TestPlanData.where("test_case_flow_id = ? and test_plan_id = ?",test_case_flows[i].id,test_plan.id).first
-        test_datas= ['']
+        test_datas= []
 
         if test_plan_datas !=nil
 
 
           #是枚举数
-              if test_plan_datas.flow_date_type = nil and (test_plan_datas.flow_date_type.code=='region' or  test_plan_datas.flow_date_type.code=='enum')
+              if test_plan_datas.flow_date_type != nil and (test_plan_datas.flow_date_type.code=='region' or  test_plan_datas.flow_date_type.code=='enum')
               reg = Regexp.new(".*\#(.*)\#.*")
               res =  reg.match(test_plan_datas.test_data)
 
@@ -75,6 +75,7 @@ class TestScript < ActiveRecord::Base
 
                   ranges = res[1].split("\-")
                   if ranges.length > 1
+
                     for m in (ranges[0].to_i)..(ranges[1].to_i)
                       temp = test_plan_datas.test_data
                       temp = temp.sub(/\#.*\#/, m.to_s)
