@@ -3,7 +3,7 @@ require 'fileutils'
 class TestPlan < ActiveRecord::Base
 	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo,:time_after,:time_every,:time_at,:time_cron,:job_id,:job_sstatus
 
-
+   attr_accessor :time_select
    	has_many :test_plan_cases, :dependent => :destroy
    	has_many :test_cases , :through=>:test_plan_cases
    	has_many :test_scripts, :dependent => :destroy
@@ -11,7 +11,28 @@ class TestPlan < ActiveRecord::Base
     has_many :test_results, :dependent => :destroy
     belongs_to :user  
 
-   	def file_script
+   	
+    def time_select
+
+      if time_cron != nil and time_cron !=''
+        return 1
+      end
+
+      if time_at != nil and time_at !=''
+        return 2
+      end
+
+      if time_after != nil and time_after !=''
+        return 3
+      end
+
+      if time_every != nil and time_every !=''
+        return 4
+      end
+
+    end
+
+    def file_script
    		path = "./test_script/" + self.id.to_s 
    		control_file_path = path + "/" + self.id.to_s + "_control.rb"
    		if  File.exist? path
@@ -57,28 +78,38 @@ class TestPlan < ActiveRecord::Base
      
       job = $scheduler.job(self.job_id)
 
-      if job !=nil
-        if job.paused?
-          if self.job_status !='暂停中'
-            self.job_status = '暂停中'
-            self.save
-          end
-          return "暂停中"
-        else
-           if self.job_status !='运行中'
-            self.job_status = '运行中'
-            self.save
-          end
-           return "运行中"
-        end
-      else
+      if job == nil
         if self.job_status !='停止'
             self.job_status = '停止'
             self.save
           end
-        return "停止"  
+        return "停止" 
       end
 
+      if job.scheduled?
+           if job.paused?
+            if self.job_status !='暂停中'
+              self.job_status = '暂停中'
+              self.save
+            end
+          return "暂停中"
+          end
+
+          if self.job_status !='运行中'
+            self.job_status = '运行中'
+            self.save
+          end
+          return "运行中"
+      end
+
+
+      if job.paused?
+            if self.job_status !='暂停中'
+              self.job_status = '暂停中'
+              self.save
+            end
+          return "暂停中"
+      end
     end
 
 end

@@ -6,6 +6,8 @@ AutoTest::Application.routes.draw do
 
   resources :test_plans
 
+  resources :users
+
 
   resources :flow_date_types
 
@@ -18,7 +20,7 @@ AutoTest::Application.routes.draw do
 
   resources :test_cases 
 
-  match 'home/index' => 'home#index'
+  match 'home/index' => 'test_plan_cases#index'
   
   get '/test_plan_case/get_data' => "test_plan_cases#get_data"
   post '/test_plan_case/set_data' => "test_plan_cases#set_data"
@@ -48,7 +50,7 @@ AutoTest::Application.routes.draw do
   get '/test_plans/:id/script' => "test_plans#script", :as => "script_test_plan"
 
 
-  root :to => 'home#index'
+  root :to => 'test_plan_cases#index'
 
   
   # The priority is based upon order of creation:

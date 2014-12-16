@@ -11,7 +11,7 @@ class TestResult < ActiveRecord::Base
    
   	if r != nil and r.length > 0
       if data[:test_result_content] != nil
-  		r[0].test_result_content = r[0].test_result_content + data[:test_result_content]
+  		r[0].test_result_content = r[0].test_result_content + "<br>"  + data[:test_result_content]
       end
   		r[0].test_result_flag = data[:test_result_flag]
       if data[:test_script_id] != nil

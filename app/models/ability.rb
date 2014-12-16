@@ -2,14 +2,17 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    
+    user ||= User.new
     if user.role == 'sys'  
         can :manage, :all   
+        cannot :destroy, [User]
     end 
 
 
     if user.role == 'admin'  
         can :manage, :all
+        cannot :manage, [FlowType,FlowDateType]
+        cannot :destroy, [User]
         cannot :destroy, [TestPlan ,  TestCase]
     end
 
@@ -21,9 +24,9 @@ class Ability
         can :done, TestPlan
     end
 
-    can :read, [TestPlan,TestCase]
+    can :read, [TestPlan,TestCase,FlowType,FlowDateType]
 
-    can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestPlanCase,TestScript], :user_id => user.id.to_s
+    can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
 
 
     # Define abilities for the passed in user here. For example:

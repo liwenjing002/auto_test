@@ -57,28 +57,28 @@
     <td><% if can? :done, test_plan %>  <%= link_to '生成所有脚本', pro_test_plan_path(test_plan) ,:remote => true%><%end%></td>
     <td>
         <%if test_plan.get_job_status()  == "停止"%>
-            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+            <% if can? :done, test_plan %> 
         <%= link_to '启动', excuse_test_plan_path(test_plan) ,:remote => true%>
            <%end%>
         <%end%>
     </td>
      <td>
         <%if test_plan.get_job_status()  == "运行中" || test_plan.get_job_status()  == "暂停中"%>
-            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+           <% if can? :done, test_plan %> 
         <%= link_to '停止', stop_test_plan_path(test_plan) ,:remote => true%>
            <%end%>
         <%end%>
     </td>
      <td>
         <%if test_plan.get_job_status()  == "运行中"%>
-            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+            <% if can? :done, test_plan %> 
         <%= link_to '暂停', pause_test_plan_path(test_plan) ,:remote => true%>
            <%end%>
         <%end%>
     </td>
      <td>
         <%if test_plan.get_job_status()  == "暂停中"%>
-            <%if "#{current_user.id }"== "#{test_plan.user_id}"%>
+           <% if can? :done, test_plan %> 
         <%= link_to '恢复', resume_test_plan_path(test_plan) ,:remote => true%>
            <%end%>
         <%end%>

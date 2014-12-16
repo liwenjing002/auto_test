@@ -15,27 +15,53 @@
     <%= f.label :名称 %><br />
     <%= f.text_field :name %>
   </div>
+
+  <p>----------------------------------------------------------------------------</p>
+        <div class="field">
+    <%= f.label :cron—时间定义%><br />
+    指定时间：<%= f.radio_button(:time_select, "1",:onclick=>"$('.time_select').hide();$('#time_cron').show()") %> <br>
+    <div id="time_cron" <%if @test_plan.time_select !=1 %>style="display:none" <%end%> class="time_select">
+    <%= f.text_field :time_cron %>
+
+    <p>1. Seconds 秒 
+2. Minutes 分钟 
+3. Hours 小时 
+4. Day-of-Month 月中的天 
+5. Month 月 
+6. Day-of-Week 周中的天 
+7. Year (optional field) 年（可选的域）
+</p>
+</div>
+   </div>
+
+
+ <p>----------------------------------------------------------------------------</p>
+    <div class="field">
+    <%= f.label :在什么时候执行%><br />
+    指定时间：<%= f.radio_button(:time_select, "2",:onclick=>"$('.time_select').hide();$('#time_at').show()") %> <br>
+    <div id="time_at" class="time_select" <%if @test_plan.time_select !=2 %>style="display:none" <%end%>>
+    <%= select_datetime  Date.today, prefix: :time_at %>
+    </div>
+   </div>
+ <p>----------------------------------------------------------------------------</p>
   <div class="field">
     <%= f.label :几秒后执行 %><br />
-    <%= f.number_field :time_after %>
+    指定时间：<%= f.radio_button(:time_select, 3,:onclick=>"$('.time_select').hide();$('#time_after').show()") %> <br>
+    <div id="time_after" class="time_select" <%if @test_plan.time_select !=3 %>style="display:none" <%end%>>
+    <%= f.select :time_after,  [['请选择', ''],['10s', 10],['30s', 30],['60s', 60],['120s', 120],['300s', 300]]%>
   </div>
-
+  </div>
+ <p>----------------------------------------------------------------------------</p>
 
   <div class="field">
     <%= f.label :每隔几分钟执行 %><br />
-    <%= f.number_field :time_every %>
+    指定时间：<%= f.radio_button(:time_select, "4",:onclick=>"$('.time_select').hide();$('#time_every').show()") %> <br>
+    <div id="time_every" class="time_select" <%if @test_plan.time_select !=4 %>style="display:none" <%end%>>
+    <%= f.select :time_every,  [['请选择', ''],['5分钟', 5],['10分钟', 10],['20分钟', 30],['30分钟', 30],['60分钟', 60],['120分钟', 120]]%>
   </div>
+  </div>
+ <p>----------------------------------------------------------------------------</p>
 
-
-   <div class="field">
-    <%= f.label :在什么时候执行%><br />
-    <%= f.text_field :time_at %>
-   </div>
-
-      <div class="field">
-    <%= f.label :cron—时间定义%><br />
-    <%= f.text_field :time_cron %>
-   </div>
 
 
   <div class="field">

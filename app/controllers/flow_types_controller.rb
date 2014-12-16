@@ -1,4 +1,6 @@
 class FlowTypesController < ApplicationController
+  check_authorization
+  load_and_authorize_resource
   # GET /flow_types
   # GET /flow_types.json
   def index

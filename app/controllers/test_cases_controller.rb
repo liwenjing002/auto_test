@@ -1,4 +1,6 @@
 ﻿class TestCasesController < ApplicationController
+  check_authorization
+  load_and_authorize_resource
   # GET /test_cases
   # GET /test_cases.json
   def index

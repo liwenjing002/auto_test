@@ -17,9 +17,11 @@
 <%= link_to '测试计划管理', test_plans_path %>
 
 
-<%= link_to '动作类型管理', flow_types_path %>
+<% if can? :manage, FlowType %> <%= link_to '动作类型管理', flow_types_path %> <%end%>
 
-<%#= link_to '数据类型管理', flow_date_types_path %>
+<% if can? :manage, FlowDateType %> <%= link_to '数据类型管理', flow_date_types_path %><%end%>
+
+<% if can? :manage, User %> <%= link_to '用户管理', users_path %><%end%>
 
 <%= link_to '下载chrome插件', "/chrome_auto_test.rar",:title=>"下载插件后解压，然后chrome浏览器加载插件" %>
 

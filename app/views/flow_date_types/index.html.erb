@@ -14,8 +14,8 @@
     <td><%= flow_date_type.code %></td>
     <td><%= flow_date_type.name %></td>
     <td><%= link_to 'Show', flow_date_type %></td>
-    <td><%= link_to 'Edit', edit_flow_date_type_path(flow_date_type) %></td>
-    <td><%= link_to 'Destroy', flow_date_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><% if can? :manage, flow_date_type %><%= link_to 'Edit', edit_flow_date_type_path(flow_date_type) %><%end%></td>
+    <td><% if can? :manage, flow_date_type %><%= link_to 'Destroy', flow_date_type, method: :delete, data: { confirm: 'Are you sure?' } %><%end%></td>
   </tr>
 <% end %>
 </table>

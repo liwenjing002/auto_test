@@ -1,0 +1,31 @@
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this flow_type from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id %><br />
+    <%= @user.id %>
+  </div>
+  <div class="field">
+    <%= f.label :邮箱 %><br />
+     <%= @user.email %>
+  </div>
+
+  <div class="field">
+    <%= f.label :角色 %><br />
+    <%= f.select :role,  [['请选择', ''],['系统管理员', 'sys'],['管理员', 'admin'],['组长', 'manager']]%>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,4 +1,6 @@
 class FlowDateTypesController < ApplicationController
+  check_authorization
+  load_and_authorize_resource
   # GET /flow_date_types
   # GET /flow_date_types.json
   def index

@@ -3,6 +3,7 @@ gem 'watir-webdriver'
 gem 'rails', '3.2.18'
 gem 'thin'
 gem 'rufus-scheduler'
+gem 'cancan'
 gem 'ruby-oci8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

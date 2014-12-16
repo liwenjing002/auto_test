@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Code:</b>
+  <%= @flow_type.code %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @flow_type.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_flow_type_path(@flow_type) %> |
+<%= link_to 'Back', flow_types_path %>

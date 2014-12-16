@@ -1,0 +1,25 @@
+<h1>用户管理</h1>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th>邮箱</th>
+    <th>角色</th>
+    <th>编辑</th>
+    <th>删除</th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.id %></td>
+    <td><%= user.email %></td>
+    <td><%= case(user.role) when('sys') then '系统管理员' when('admin') then '管理员' when('manager') then '组长' end %></td>
+    <td><% if can? :manage, user %><%= link_to 'Edit', edit_user_path(user) %><%end%></td>
+    <td><% if can? :manage, user %><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %><%end%></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+

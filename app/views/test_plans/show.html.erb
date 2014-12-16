@@ -1,13 +1,28 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Name:</b>
+  <b>名称:</b>
   <%= @test_plan.name %>
 </p>
 
 <p>
-  <b>Host:</b>
-  <%= @test_plan.host %>
+  <b>几秒后执行:</b>
+  <%= @test_plan.time_after %>
+</p>
+
+<p>
+  <b>几分钟执行一次:</b>
+  <%= @test_plan.time_every %>
+</p>
+
+<p>
+  <b>什么时候开始执行:</b>
+  <%= @test_plan.time_at %>
+</p>
+
+<p>
+  <b>cron时间设置:</b>
+  <%= @test_plan.time_cron %>
 </p>
 
 <p>

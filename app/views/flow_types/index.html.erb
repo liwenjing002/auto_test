@@ -14,8 +14,8 @@
     <td><%= flow_type.code %></td>
     <td><%= flow_type.name %></td>
     <td><%= link_to 'Show', flow_type %></td>
-    <td><%= link_to 'Edit', edit_flow_type_path(flow_type) %></td>
-    <td><%= link_to 'Destroy', flow_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><% if can? :manage, flow_type %><%= link_to 'Edit', edit_flow_type_path(flow_type) %><%end%></td>
+    <td><% if can? :manage, flow_type %><%= link_to 'Destroy', flow_type, method: :delete, data: { confirm: 'Are you sure?' } %><%end%></td>
   </tr>
 <% end %>
 </table>
