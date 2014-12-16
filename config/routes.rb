@@ -50,7 +50,7 @@ AutoTest::Application.routes.draw do
   get '/test_plans/:id/script' => "test_plans#script", :as => "script_test_plan"
 
 
-  root :to => 'test_plan_cases#index'
+  root :to => 'test_cases#index'
 
   
   # The priority is based upon order of creation:
