@@ -29,6 +29,7 @@ class TestPlan < ActiveRecord::Base
       if time_every != nil and time_every !=''
         return 4
       end
+      return 0
 
     end
 

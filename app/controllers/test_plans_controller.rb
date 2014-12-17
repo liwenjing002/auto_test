@@ -221,18 +221,24 @@ def clean_param params
       end 
      end
 
-
      
-
-
-      
-
-
+     if job_id != ''
       puts job_id
       @test_plan.job_id =  job_id
       @test_plan.job_status = '运行中'
       @test_plan.save
       $scheduler.join
+    end
+     
+     if(@test_plan.time_select == 0)
+      @test_plan.excuse
+
+     end
+
+      
+
+
+      
       end
     
      respond_to do |format|

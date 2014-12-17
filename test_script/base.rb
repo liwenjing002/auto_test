@@ -685,7 +685,7 @@ def do_checkCode(b,json,data)
     checkCode = ssh.exec!("tail -100 "+  data[:log_path] + "| grep #{data[:reg].split(':')[0]}")
     
 
-    puts "get code back:" + checkCode ? checkCode : ""
+    puts "get code back:---------------------------------------------" + checkCode ? checkCode : ""
   
 
     reg = Regexp.new(data[:reg]) 
@@ -693,7 +693,8 @@ def do_checkCode(b,json,data)
 
     if listcode.length != 0 
       last_index = listcode.length - 1
-      checkCode =  listcode[last_index]
+      checkCode =  listcode[last_index][0]
+      puts "输入的验证码是：" + checkCode.to_s
       do_input b,json,checkCode
       sleep 1
       return b
