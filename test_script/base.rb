@@ -198,14 +198,14 @@ def do_input(b,json,data)
   puts "开始处理输入------------------"
 
 
-   reg = Regexp.new(".*\\[(.*)\\].*")
+   reg = Regexp.new(".*\\#(.*)\\#.*")
    res =  reg.match(data)
    
    if res != nil and res.length ==2
       puts "数据类型为随机数类型，特殊处理---------------------------------------------------"
       rang_num = res[1]
       rang_res = newpass rang_num.to_i
-      data = data.sub(/\[.*\]/, rang_res)
+      data = data.sub(/\#.*\#/, rang_res)
       puts "最终生成的随机数为：" + data + "-----------------------------------------------------"
 
    end
