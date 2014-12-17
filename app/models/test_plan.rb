@@ -89,7 +89,7 @@ class TestPlan < ActiveRecord::Base
 
       if job.scheduled?
 
-          if time_select == 4 or time_select == 1 or time_select == 2
+          if time_select == 4 
            if job.paused?
             if self.job_status !='暂停中'
               self.job_status = '暂停中'
