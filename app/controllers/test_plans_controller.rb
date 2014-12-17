@@ -129,7 +129,7 @@ def clean_param params
     if time_select =='2'
     d = Date.civil(params[:time_at][:year].to_i, params[:time_at][:month].to_i, params[:time_at][:day].to_i)
 
-    clean_param @test_plan
+    clean_param params
     @test_plan.time_at = d.strftime("%Y/%m/%d %H:%M:%S")
     params[:test_plan][:time_at] = @test_plan.time_at
 
