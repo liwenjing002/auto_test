@@ -549,6 +549,8 @@ def do_assert(b,json,data)
 
     dates.each do |d|
       reg = Regexp.new(".*" + d + ".*")
+      puts "对比结果------------------------------------------------"
+      puts reg 
       if reg.match(t.text())
         result = true
       end
