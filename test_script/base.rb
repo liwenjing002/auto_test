@@ -187,7 +187,7 @@ end
 #生成随机数
 def newpass(len)
   newpass = ""
-  1.upto(len){ |i| newpass << rand(10).to_s}
+  1.upto(len){ |i| newpass << (rand(9) + 1).to_s}
   return newpass
 end
 
