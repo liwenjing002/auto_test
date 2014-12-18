@@ -65,13 +65,48 @@ class TestPlan < ActiveRecord::Base
 
 
    	def excuse
+      begin 
 		load "./test_script/" + self.id.to_s + "/" + self.id.to_s + "_control.rb"
+    temp_test_plan = TestPlan.find(self.id)
+    flag =  1
+    temp_test_plan.test_results.each do |test_result|
+      puts "用例执行结果：" + test_result.test_result_flag.to_s
+      if !test_result.test_result_flag
+        flag =0
+        break
+      end
+    end
+
+    puts "======================================================================================="
+    puts '执行结果为：'  + flag.to_s
+      for i in 0..2
+        if flag == 0 
+            if i == 2
+              break
+            end
+            TestResult.delete_all("test_plan_id = #{self.id}")
+            load "./test_script/" + self.id.to_s + "/" + self.id.to_s + "_control.rb"
+            temp_test_plan = TestPlan.find(self.id)
+           temp_test_plan.test_results.each do |test_result|
+            if test_result.test_result_flag == 0
+              flag =0
+              break
+            end
+          end
+        else
+          break
+      end
+    end
 
     ResultMailer.send_mail(self.user.email,self.id).deliver
 
     carbon_email.split("|").each do |email|
       ResultMailer.send_mail(email,self.id).deliver
     end
+    rescue Exception => e 
+
+    puts e
+    end 
 
     
    	end
