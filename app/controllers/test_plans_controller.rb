@@ -67,12 +67,12 @@ def clean_param params
   # POST /test_plans
   # POST /test_plans.json
   def create
-    @test_plan = TestPlan.new(params[:test_plan])
-
+    
+    
     time_select = params[:test_plan][:time_select]
     params[:test_plan].delete(:time_select) 
 
-
+    @test_plan = TestPlan.new(params[:test_plan])
 
     if time_select =='1'
        @test_plan = clean_test_plan @test_plan
