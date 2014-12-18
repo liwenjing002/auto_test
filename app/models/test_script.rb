@@ -1,7 +1,7 @@
 class TestScript < ActiveRecord::Base
-  attr_accessible :script_content, :test_case_id, :test_plan_id
+  attr_accessible :script_content, :test_case_id, :test_plan_id,:user_id
 
-
+  belongs_to :test_plan 
   before_destroy :rm_file
 
 
@@ -135,6 +135,7 @@ class TestScript < ActiveRecord::Base
    end
     testScript.script_content = testScript.script_content   + 'b.quit'  + "\n"
     testScript.id = nil
+    testScript.user_id = test_plan.user_id
     test_plan.test_num = test_plan.test_num + 1
     testScript.save
 

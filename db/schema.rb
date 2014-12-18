@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141215093540) do
+ActiveRecord::Schema.define(:version => 20141218030740) do
 
   create_table "flow_date_types", :force => true do |t|
     t.string   "code"
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20141215093540) do
     t.string   "user_name"
     t.string   "pd"
     t.string   "log_path"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.string   "test_num"
     t.string   "user_id"
     t.text     "memo"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20141215093540) do
     t.string   "time_at"
     t.string   "job_id"
     t.string   "job_status"
+    t.string   "carbon_email"
   end
 
   create_table "test_results", :force => true do |t|
@@ -97,6 +98,7 @@ ActiveRecord::Schema.define(:version => 20141215093540) do
     t.text     "script_content"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.string   "user_id"
   end
 
   create_table "users", :force => true do |t|

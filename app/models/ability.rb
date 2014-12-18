@@ -25,7 +25,8 @@ class Ability
     end
 
     can :read, [TestPlan,TestCase,FlowType,FlowDateType]
-
+    can :read, [TestPlan,TestCase,FlowType,FlowDateType]
+    cannot :read, [TestScript], :user_id => user.id.to_s
     can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
 
 
