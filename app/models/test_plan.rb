@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'fileutils'
 class TestPlan < ActiveRecord::Base
-	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo,:time_after,:time_every,:time_at,:time_cron,:job_id,:job_sstatus
+	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo,:time_after,:time_every,:time_at,:time_cron,:job_id,:job_sstatus,:carbon_email
 
    attr_accessor :time_select
    	has_many :test_plan_cases, :dependent => :destroy
@@ -66,7 +66,14 @@ class TestPlan < ActiveRecord::Base
 
    	def excuse
 		load "./test_script/" + self.id.to_s + "/" + self.id.to_s + "_control.rb"
+
     ResultMailer.send_mail(self.user.email,self.id).deliver
+
+    carbon_email.split("|").each do |email|
+      ResultMailer.send_mail(email,self.id).deliver
+    end
+
+    
    	end
 
     def get_error_cast_num
