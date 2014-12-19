@@ -13,7 +13,6 @@ class Ability
         can :manage, :all
         cannot :manage, [FlowType,FlowDateType]
         cannot :destroy, [User]
-        cannot :destroy, [TestPlan ,  TestCase]
     end
 
 
