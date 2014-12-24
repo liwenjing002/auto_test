@@ -17,6 +17,8 @@ class Ability
 
     can :read, [TestPlan,TestResult,TestCase,TestCaseFlow]
 
+    can :result, [TestPlan]
+
     can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
 
 
