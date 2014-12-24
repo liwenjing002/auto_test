@@ -30,6 +30,7 @@ class Ability
 
     can :create, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
     can :new, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
+    can :read, [TestPlan,TestResult,TestCase,TestCaseFlow]
 
    
 
