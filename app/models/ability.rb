@@ -15,6 +15,8 @@ class Ability
         cannot :destroy, [User]
     end
 
+    can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
+
 
     alias_action :excuse, :pause,:resume, :stop,:pro, :to => :done
 
@@ -29,7 +31,7 @@ class Ability
     can :create, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
     can :new, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
 
-    can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
+   
 
   
     # Define abilities for the passed in user here. For example:
