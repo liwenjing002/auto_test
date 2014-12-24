@@ -15,6 +15,8 @@ class Ability
         cannot :destroy, [User]
     end
 
+    can :read, [TestPlan,TestResult,TestCase,TestCaseFlow]
+
     can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
 
 
@@ -30,7 +32,7 @@ class Ability
 
     can :create, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
     can :new, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
-    can :read, [TestPlan,TestResult,TestCase,TestCaseFlow]
+
 
    
 
