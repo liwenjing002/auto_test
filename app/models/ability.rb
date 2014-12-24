@@ -23,12 +23,14 @@ class Ability
         can :done, TestPlan
     end
 
-    can :read, [TestPlan,TestCase,FlowType,FlowDateType]
-    can :read, [TestPlan,TestCase,FlowType,FlowDateType]
-    cannot :read, [TestScript], :user_id => user.id.to_s
+
+    can :read, [TestScript], :user_id => user.id.to_s
+
+    can :create, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript]
+
     can :manage, [TestPlan,TestResult,TestCase,TestCaseFlow,TestScript], :user_id => user.id.to_s
 
-
+  
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
