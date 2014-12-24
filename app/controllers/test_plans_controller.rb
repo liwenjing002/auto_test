@@ -12,7 +12,7 @@ class TestPlansController < ApplicationController
     @test_plans = @test_plans.paginate :page => params[:page]||1,
                             :per_page=>10,
                             :order => 'created_at DESC'
-    authorize! :read, TestPlan
+  
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @test_plans }
@@ -24,7 +24,7 @@ class TestPlansController < ApplicationController
   # GET /test_plans/1.json
   def show
     @test_plan = TestPlan.find(params[:id])
-     authorize! :read, @test_plan
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @test_plan }
@@ -36,7 +36,7 @@ class TestPlansController < ApplicationController
   def new
     @test_plan = TestPlan.new
 
-    authorize! :manager, @test_plan
+    
 
     respond_to do |format|
       format.html # new.html.erb
@@ -47,7 +47,7 @@ class TestPlansController < ApplicationController
   # GET /test_plans/1/edit
   def edit
     @test_plan = TestPlan.find(params[:id])
-    authorize! :manager, @test_plan
+   
   end
 
 
@@ -77,7 +77,7 @@ def clean_param params
     params[:test_plan].delete(:time_select) 
 
     @test_plan = TestPlan.new(params[:test_plan])
-    authorize! :manager, @test_plan
+   
     if time_select =='1'
        @test_plan = clean_test_plan @test_plan
        @test_plan.time_cron = params[:test_plan][:time_cron]
@@ -118,7 +118,7 @@ def clean_param params
   # PUT /test_plans/1.json
   def update
     @test_plan = TestPlan.find(params[:id])
-    authorize! :manager, @test_plan
+   
     time_select = params[:test_plan][:time_select]
     params[:test_plan].delete(:time_select) 
 
@@ -179,7 +179,7 @@ def clean_param params
   # DELETE /test_plans/1.json
   def destroy
     @test_plan = TestPlan.find(params[:id])
-    authorize! :manager, @test_plan
+   
     @test_plan.destroy
 
     respond_to do |format|
@@ -191,7 +191,7 @@ def clean_param params
 
   def excuse
     @test_plan = TestPlan.find(params[:id])
-    authorize! :done, @test_plan
+    
      TestResult.delete_all("test_plan_id = #{@test_plan.id}")
 
      Thread.new  do  
@@ -263,7 +263,7 @@ def clean_param params
   def pause
     @test_plan = TestPlan.find(params[:id])
 
-    authorize! :done, @test_plan
+    
 
     job = $scheduler.job(@test_plan.job_id)
     if job !=nil
@@ -284,7 +284,7 @@ def clean_param params
 
 def resume
     @test_plan = TestPlan.find(params[:id])
-    authorize! :done, @test_plan
+    
     job = $scheduler.job(@test_plan.job_id)
     if job !=nil
     job = $scheduler.job(@test_plan.job_id)
@@ -302,7 +302,7 @@ def resume
 
   def stop
     @test_plan = TestPlan.find(params[:id])
-    authorize! :dnoe, @test_plan
+  
     job = $scheduler.job(@test_plan.job_id)
     if job !=nil
      $scheduler.unschedule(@test_plan.job_id)
