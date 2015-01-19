@@ -1,4 +1,5 @@
 source 'https://ruby.taobao.org'
+
 gem 'watir-webdriver' 
 gem 'rails', '3.2.18'
 gem 'thin'

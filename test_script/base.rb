@@ -683,19 +683,43 @@ end
 def do_checkCode(b,json,data)
   checkCode = nil
   ssh = Net::SSH.start(data[:host], data[:user], :password => data[:password]) do |ssh|
-    puts "远程执行命令：" + "tail -100 "+  data[:log_path] + "| grep #{data[:reg].split(':')[0]}"
-    checkCode = ssh.exec!("tail -100 "+  data[:log_path] + "| grep #{data[:reg].split(':')[0]}")
+
+    paths = data[:log_path].split("|")
+
+    checkCode = ''
+    last_time = nil
+
+    paths.each do |path |
+
+    puts "远程执行命令：" + "tail -100 "+  path + "| grep '#{data[:reg].split(':')[0]}'"
+    checkCode_string = ssh.exec!("tail -100 "+  path + "| grep '#{data[:reg].split(':')[0]}'")
     
 
-    puts "get code back:---------------------------------------------" + checkCode ? checkCode : ""
-  
+    checkCode_string ||=""
+    puts "get code back:---------------------------------------------" + checkCode_string
 
     reg = Regexp.new(data[:reg]) 
-    listcode = checkCode.scan(reg)
+    listcode = checkCode_string.scan(reg)
+      if listcode.length != 0 
+        last_index = listcode.length - 1
 
-    if listcode.length != 0 
-      last_index = listcode.length - 1
-      checkCode =  listcode[last_index][0]
+
+        time_string =   checkCode_string[0,19]
+       
+        if last_time ==nil || Time.parse(time_string) > last_time
+            last_time = Time.parse(time_string)
+            checkCode =  listcode[last_index][0]
+            puts "输入的验证码是：" + checkCode.to_s
+        end
+        
+
+       
+
+      end 
+    end 
+
+
+    if checkCode !=''
       puts "输入的验证码是：" + checkCode.to_s
       do_input b,json,checkCode
       sleep 1
