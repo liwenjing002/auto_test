@@ -787,6 +787,45 @@ def do_db(b,json,data)
 #执行查询操作
  cursor = conn.exec(json[:sql]) { |r| a<<r; puts r.join('')}
  
+  page_date = ""
+
+  data = eval(data)
+
+  puts "开始处理数据库------------------" + data.class.to_s
+
+  if data.class.to_s =="Hash"
+  puts "开始处理数据库------------------"
+  type = data[:type]
+  data.delete(:type)
+  text = data[:text]
+  data.delete(:text)
+  t = get_element(b,data,type)
+  if t!=nil and t.exists?
+      puts "页面获取内容为：" + t.text() + "---------------------------------------------------"
+      page_date = t.text()
+      puts "页面获取内容成功，进入下一步----------------------------------------------------------"
+  else
+    puts "找不到元素，点击结束-------------------------------------------------------------"
+
+    msg = '找不到元素,类型: '  + type 
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+     end
+
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    b.quit
+    raise msg
+  end
+else
+  page_date = data
+end
+
+
+
+
  if a.length == 0
 
       msg = '数据库对比失败,没有返回任何记录'
@@ -803,12 +842,16 @@ def do_db(b,json,data)
  end
 
 
+  puts "页面获取的内容为：" + page_date
+  dates = page_date.split("|")
 
-  dates = data.split("|")
+
 
   result = false
 
   dates.each do |d|
+
+      puts "比对----------------" + d
       reg = Regexp.new(".*" + d + ".*")
       if reg.match(a[0][0])
         result = true
@@ -819,7 +862,7 @@ def do_db(b,json,data)
   if result
          puts "对比成功，进入下一步------------------"
   else
-        msg = '对比失败,目前内容为: '  + a[0]
+        msg = '对比失败,目前内容为: '  + a[0][0]
         b.quit
         raise msg
   end
