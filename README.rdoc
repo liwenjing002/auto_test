@@ -1,3 +1,14 @@
+
+
+1. 安装bitnami-rubystack-1.9.3-24-windows-installer
+2. 配置环境变量 path 里面增加 C:\Bitnami\rubystack-1.9.3-24\ruby\bin
+3. 下载代码 ，git地址 git@github.com:0612800232/auto_test.git
+4：进入项目目录，cmd命令 bundle install （安装相关的插件）
+5. 初始化数据库 cmd命令 rake db:create （创建数据库）
+6. 初始化表 cmd命令  rake db:migrate （创建表）
+7. 将chrome 和 ie 的驱动 放到 C:\Bitnami\rubystack-1.9.3-24\ruby\bin
+
+
 框架介绍：
 
 1. 基于ruby语言和watire插件
