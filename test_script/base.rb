@@ -781,11 +781,52 @@ end
 
 #执行数据库比对
 def do_db(b,json,data)
+
+  name     = json[:name]
+  password = json[:password]
+  url      = json[:url]
+  sql      = json[:sql]
+
+  json.delete(:name)
+  json.delete(:password)
+  json.delete(:url)
+  json.delete(:sql)
+
+
+  type = json[:type]
+  json.delete(:type)
+  text = json[:text]
+  json.delete(:text)
+  t = get_element(b,json,type)
+  if t!=nil and t.exists?
+      puts "页面获取内容为：" + t.text() + "---------------------------------------------------"
+      sql_date = t.text()
+      puts "页面获取内容成功，进入下一步----------------------------------------------------------"
+  else
+    puts "找不到元素，点击结束-------------------------------------------------------------"
+
+    msg = '找不到元素,类型: '  + type 
+    screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    begin 
+            b.driver.save_screenshot $file_path + screenshot_path
+          rescue Exception => e 
+            b.quit
+     end
+
+    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    b.quit
+    raise msg
+  end
+
+
+  sql["?"]= "\'" + sql_date + "\'"
+
+
   #customer/customer@10.20.5.201:1521/xfdb
-  conn = OCI8.new(json[:name], json[:password],json[:url])
+  conn = OCI8.new(name, password,url)
   a =[]
-#执行查询操作
- cursor = conn.exec(json[:sql]) { |r| a<<r; puts r.join('')}
+ #执行查询操作
+ cursor = conn.exec(sql) { |r| a<<r; puts r.join('')}
  
   page_date = ""
 
@@ -820,7 +861,7 @@ def do_db(b,json,data)
     raise msg
   end
 else
-  page_date = data
+  page_date = data.to_s
 end
 
 
@@ -853,7 +894,7 @@ end
 
       puts "比对----------------" + d
       reg = Regexp.new(".*" + d + ".*")
-      if reg.match(a[0][0])
+      if reg.match(a[0][0].to_s)
         result = true
       end
   end
