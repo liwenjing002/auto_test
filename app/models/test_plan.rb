@@ -84,7 +84,7 @@ class TestPlan < ActiveRecord::Base
             if i == 2
               break
             end
-            TestResult.delete_all("test_plan_id = #{self.id}")
+            #TestResult.delete_all("test_plan_id = #{self.id}")
             load "./test_script/" + self.id.to_s + "/" + self.id.to_s + "_control.rb"
             temp_test_plan = TestPlan.find(self.id)
            temp_test_plan.test_results.each do |test_result|
