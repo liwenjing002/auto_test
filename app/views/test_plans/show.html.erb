@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <b>类型:</b>
+  <%= @test_plan.plan_type.name ? @test_plan.plan_type.name : ""%>
+</p>
+
+<p>
   <b>名称:</b>
   <%= @test_plan.name %>
 </p>

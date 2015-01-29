@@ -1,4 +1,7 @@
 AutoTest::Application.routes.draw do
+  resources :plan_types
+
+
   devise_for :users
 
   resources :test_plan_cases

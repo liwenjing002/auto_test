@@ -1,0 +1,25 @@
+<h1>Listing plan_types</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @plan_types.each do |plan_type| %>
+  <tr>
+    <td><%= plan_type.id %></td>
+    <td><%= plan_type.name %></td>
+    <td><%= link_to 'Show', plan_type %></td>
+    <td><%= link_to 'Edit', edit_plan_type_path(plan_type) %></td>
+    <td><%= link_to 'Destroy', plan_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Plan type', new_plan_type_path %>

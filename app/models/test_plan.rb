@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'fileutils'
 class TestPlan < ActiveRecord::Base
-	attr_accessible :host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo,:time_after,:time_every,:time_at,:time_cron,:job_id,:job_sstatus,:carbon_email
+	attr_accessible :plan_type_id,:host, :user_name,:log_path, :name, :pd,:test_num,:user_id,:memo,:time_after,:time_every,:time_at,:time_cron,:job_id,:job_sstatus,:carbon_email
 
    attr_accessor :time_select
    	has_many :test_plan_cases, :dependent => :destroy
@@ -9,7 +9,8 @@ class TestPlan < ActiveRecord::Base
    	has_many :test_scripts, :dependent => :destroy
    	has_many :test_plan_datas, :dependent => :destroy
     has_many :test_results, :dependent => :destroy
-    belongs_to :user  
+    belongs_to :user
+    belongs_to :plan_type    
 
    	
     def time_select

@@ -12,6 +12,11 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :类型 %><br />
+    <%= f.select :plan_type_id, PlanType.find(:all).collect {|p| [ p.name, p.id ] } %>
+  </div>
+
+  <div class="field">
     <%= f.label :名称 %><br />
     <%= f.text_field :name %>
   </div>

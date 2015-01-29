@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Id:</b>
+  <%= @plan_type.id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @plan_type.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_plan_type_path(@plan_type) %> |
+<%= link_to 'Back', plan_types_path %>

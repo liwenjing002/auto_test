@@ -8,6 +8,7 @@ class TestPlansController < ApplicationController
     @test_plans = TestPlan.where("1=1") 
     @test_plans = @test_plans.where("name like '%#{params[:title].strip}%'") if params[:title]  and params[:title] !=""
     @test_plans = @test_plans.where("user_id = #{params[:user_id]} ") if params[:user_id] and params[:user_id] !=""
+     @test_plans = @test_plans.where("plan_type_id = #{params[:plan_type_id]} ") if params[:plan_type_id] and params[:plan_type_id] !=""
     @test_plans = @test_plans.paginate :page => params[:page]||1,
                             :per_page=>10,
                             :order => 'created_at DESC'
