@@ -641,15 +641,16 @@ def do_pic(b,json,data)
     puts "开始处理截图------------------"
 
     screenshot_path =  Time.now.strftime("%Y-%m-%d-%H-%M-%S")+".png"
+    file_name =  b.name.to_s + "_" + screenshot_path
     begin 
-            b.driver.save_screenshot $file_path + screenshot_path
+            b.driver.save_screenshot $file_path + file_name
           rescue Exception => e 
             b.quit
      end
 
     msg = "页面截图成功："
     
-    msg  = msg + "<a href=/screan_shot/" + screenshot_path + " target='_blank'>查看截图</a>"
+    msg  = msg + "<a href=\'/screan_shot/" + file_name + "\' target='_blank'>查看截图</a>"
     
     json[:test_result_content] = msg
     json[:test_result_flag] = true
