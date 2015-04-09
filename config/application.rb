@@ -71,7 +71,7 @@ module AutoTest
     :domain => "126.com",   #qq.com
     :authentication => :login,
     :user_name => "liwenjingabc@126.com", #修改邮箱
-    :password => "lwj1988@A1" #修改正确的密码
+    :password => "" #修改正确的密码
   }
 
 
